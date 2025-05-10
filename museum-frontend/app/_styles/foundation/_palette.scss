@@ -1,0 +1,116 @@
+// 主色系
+$primary: #7B2D12;       // 磚紅（主色）
+$secondary: #EA580C;     // 深橘（副色）
+
+// 主題色調擴充
+$light: #F4F1EA;         // 米白（釉面底色）
+$dark: #1F1F1F;          // 消光黑（深色背景）
+$muted: #D7CEC3;         // 陶粉灰（低調區塊背景）
+
+// 背景與文字
+$main-bg: #F8F1E3;       // 主背景：米白色 
+$sub-bg: #E0DAD2;        // 次背景：陶片自然色
+$main-text: #3C3A36;     // 主文字：墨色
+$sub-text: #78716C;      // 副文字：暖灰棕
+$light-text: #E8E6E1;    // 淺灰文字
+$toast-text: #3C3A36;    // 吐司文字
+
+// 功能提示色
+$success: #3B8270;       // 青釉藍綠（成功提示）
+$danger: #DC2626;        // 鮮紅（危險警告）
+$warning: #EBA83A;       // 琥珀黃（溫和警告）
+$info: #4E3629;          // 咖啡棕（資訊色）
+
+// 按鈕
+$btn-primary: #9A3412;   // 新增/主要：磚紅
+$btn-danger: #DC2626;    // 危險/刪除：紅色
+$btn-cancel: #C7BFB5;    // 取消/返回：淺灰
+
+// 側邊欄
+$sidebar-bg: #1F1F1F;    // 背景：深灰色
+$sidebar-text: #E8E6E1;  // 未選中文字：淺灰
+$sidebar-active: #7B2D12;// 選中狀態：磚紅
+$sidebar-hover: #EA580C; // Hover效果：深橘
+
+// 警示色
+$alert: #F8F1E3;         // 米白基底，通用提醒
+$alert-primary: #F2DFD7; // 淺磚紅釉，搭配磚紅主色
+$alert-secondary: #FBE7D6;// 淺琥珀橘釉，搭副色
+$alert-success: #E9E3DC; // 柔霧咖啡灰
+$alert-danger: #FAD4D2;  // 柔粉紅釉
+$alert-warning: #FBEEC8; // 琥珀黃釉
+$alert-info: #D7EFE9;    // 青釉藍綠釉
+
+// 字體
+$font-family-base: 'Noto Serif TC', 'Noto Serif TC Regular', Helvetica, Arial, 'PingFang TC',
+  '苹方-繁', 'Heiti TC', '黑體-繁', 'Microsoft JhengHei', '微軟正黑體',
+  system-ui,
+  -apple-system,
+  'Segoe UI',
+  Roboto,
+  'Helvetica Neue',
+  Arial,
+  'Noto Sans',
+  'Liberation Sans',
+  sans-serif,
+  'Apple Color Emoji',
+  'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+$font-family-serif: 'Noto Serif TC', serif;
+$font-family-sans-serif: 'Noto Sans TC', sans-serif;
+$font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+// 字體大小
+$font-size-base: 1rem;
+$font-size-sm: 0.875rem;
+$font-size-lg: 1.125rem;
+$font-size-xl: 1.25rem;
+
+// 字重
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// 行高
+$line-height-base: 1.5;
+$line-height-sm: 1.25;
+$line-height-lg: 1.75;
+
+// 間距
+$spacer: 1rem;
+$spacers: (
+  0: 0,
+  1: $spacer * 0.25,
+  2: $spacer * 0.5,
+  3: $spacer,
+  4: $spacer * 1.5,
+  5: $spacer * 3
+);
+
+// 圓角
+$border-radius: 0.375rem;
+$border-radius-sm: 0.25rem;
+$border-radius-lg: 0.5rem;
+$border-radius-xl: 0.75rem;
+$border-radius-pill: 50rem;
+
+// 陰影
+$box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+$box-shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+$box-shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+
+// 過渡
+$transition-base: all 0.2s ease-in-out;
+$transition-fade: opacity 0.15s linear;
+$transition-collapse: height 0.35s ease;
+
+// z-index
+$z-index-dropdown: 1000;
+$z-index-sticky: 1020;
+$z-index-fixed: 1030;
+$z-index-modal-backdrop: 1040;
+$z-index-modal: 1050;
+$z-index-popover: 1060;
+$z-index-tooltip: 1070; 

@@ -1,0 +1,355 @@
+/* ------------------------------------------------------------
+  authModal.module.scss  ‧  會員登入 / 註冊——玻璃泡泡・柔霧升級版
+  ------------------------------------------------------------ */
+
+@use 'foundation/palette' as *;
+@use 'foundation/mixins' as *;
+@use 'bootstrap/scss/bootstrap' as bootstrap;
+@use 'vendors/bootstrap-override' as *;
+
+@use './components/buttons';
+
+//--------------------------------------------------------------
+// 1. 共用函式
+//--------------------------------------------------------------
+@function opa($color, $opacity) {
+  @return rgba(red($color), green($color), blue($color), $opacity);
+}
+
+//--------------------------------------------------------------
+// 2. Modal 外框
+//--------------------------------------------------------------
+.authModal {
+  &.modal { --bs-modal-bg: transparent; }
+
+  .modal-dialog { max-width: 420px; }
+
+  .modal-content {
+    position: relative;
+    border: none;
+    border-radius: bootstrap.$border-radius-lg;
+    background: opa($light, .88);              // 米白 88% 透光
+    backdrop-filter: blur(18px) saturate(145%);
+    -webkit-backdrop-filter: blur(18px) saturate(145%);
+    box-shadow:
+      0 6px 28px opa($dark, .18),
+      inset 0 0 14px opa(#fff, .28);
+    overflow: hidden;
+    isolation: isolate;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: -25% -35%; // 加長下方範圍，暈光更柔
+      background:
+        radial-gradient(60% 80% at 0% 0%,      opa($primary, .30) 0%, transparent 70%),
+        radial-gradient(50% 70% at 100% 100%,  opa($secondary, .28) 0%, transparent 75%);
+      filter: blur(60px);
+      z-index: -1;
+    }
+
+    animation: modalPop .45s cubic-bezier(.25,.8,.25,1);
+  }
+
+  @keyframes modalPop {
+    0%   { transform: translateY(40px) scale(.94); opacity: 0; }
+    100% { transform: none;                      opacity: 1; }
+  }
+}
+
+//--------------------------------------------------------------
+// 3. Header
+//--------------------------------------------------------------
+.modalHeader {
+  background: transparent;
+  border-bottom: none;
+  padding: 1.8rem 2rem 1rem;
+
+  .modal-title {
+    font-family: $font-family-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: $primary;
+    text-shadow: 0 1px 3px opa(#fff, .8);
+  }
+
+  .btn-close {
+    filter: invert(.35) brightness(1.3);
+    opacity: .85;
+    transition: opacity .2s;
+    &:hover { opacity: 1; }
+  }
+}
+
+//--------------------------------------------------------------
+// 4. Alert
+//--------------------------------------------------------------
+.alert {
+  background: opa($danger, .14);
+  border: 1px solid opa($danger, .28);
+  color: $danger;
+  border-radius: bootstrap.$border-radius-sm;
+  box-shadow: 0 2px 12px opa($danger, .16);
+}
+
+//--------------------------------------------------------------
+// 5. Form Layout
+//--------------------------------------------------------------
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: .45rem;
+    font-weight: 500;
+    color: $main-text;
+  }
+
+  /* 共用輸入 & 下拉 */
+  .input,
+  .form-select {
+    width: 100%;
+    padding: .65rem 1rem;
+    background: opa(#fff, .32);
+    border: 1px solid opa(#fff, .48);
+    border-radius: bootstrap.$border-radius-sm;
+    color: $main-text;
+    backdrop-filter: blur(14px) saturate(160%);
+    transition: all .22s ease;
+    box-shadow: inset 0 1px 4px opa(#fff,.28);
+
+    &::placeholder { color: $sub-text; }
+
+    &:hover {
+      box-shadow: inset 0 1px 6px opa(#fff,.5);
+    }
+
+    &:focus {
+      border-color: $primary;
+      box-shadow:
+        0 0 0 .16rem opa($primary,.22),
+        inset 0 1px 6px opa(#fff,.55);
+    }
+  }
+
+  /* 驗證 */
+  .input.is-invalid,
+  .form-select.is-invalid { border-color: $danger; }
+  .input.is-valid,
+  .form-select.is-valid   { border-color: $success; }
+
+  .invalid-feedback {
+    color: $danger;
+    font-size: .82rem;
+    margin-top: .25rem;
+  }
+}
+
+//--------------------------------------------------------------
+// 6. FloatingField 輸入框外層（密碼可見切換）
+//--------------------------------------------------------------
+.floating-label-wrapper {
+  position: relative;
+
+  .password-toggle {
+    position: absolute;
+    right: .85rem;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: $sub-text;
+    transition: color .2s;
+
+    &:hover { color: $primary; }
+  }
+}
+
+//--------------------------------------------------------------
+// 7. Buttons
+//--------------------------------------------------------------
+.submitButton,
+.googleButton {
+  position: relative;
+  width: 100%;
+  padding: .85rem 1rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border: none;
+  border-radius: bootstrap.$border-radius-sm;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: .5rem;
+  transition: transform .22s ease, box-shadow .22s ease;
+  backdrop-filter: blur(14px) saturate(185%);
+
+  &:disabled { opacity: .6; cursor: not-allowed; }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(circle at 50% 100%, opa(#fff,.85) 0%, transparent 70%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s;
+  }
+  &:hover:not(:disabled) { transform: translateY(-2px) scale(1.02); }
+  &:hover:not(:disabled)::after { opacity: 1; }
+  &:active:not(:disabled) { transform: scale(.97); }
+}
+
+.submitButton {
+  background: linear-gradient(135deg, lighten($primary, 2%), darken($primary, 4%));
+  color: #fff;
+  box-shadow: 0 4px 18px opa($primary,.28);
+}
+
+.googleButton {
+  background: opa(#fff,.92);
+  color: $main-text;
+  border: 1px solid opa($main-text,.14);
+  box-shadow: 0 4px 14px opa(#000,.08);
+}
+
+.googleIcon { font-size: 1.2rem; }
+
+//--------------------------------------------------------------
+// 8. Divider
+//--------------------------------------------------------------
+.divider {
+  position: relative;
+  text-align: center;
+  margin: 1rem 0 1.1rem;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: opa($main-text,.12);
+  }
+  span {
+    position: relative;
+    background: opa($light,.88);
+    padding: 0 .8rem;
+    font-size: .85rem;
+    color: $sub-text;
+  }
+}
+
+//--------------------------------------------------------------
+// 9. Links
+//--------------------------------------------------------------
+.links {
+  margin-top: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .4rem;
+
+  .link {
+    background: none;
+    border: none;
+    color: $primary;
+    font-size: .9rem;
+    text-decoration: underline;
+    cursor: pointer;
+    transition: color .22s ease;
+    &:hover { color: $secondary; }
+  }
+}
+
+.auth-modal {
+  .modal-content {
+    background-color: $light;
+    border: none;
+    border-radius: bootstrap.$border-radius-lg;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .modal-header {
+    border-bottom: 1px solid rgba($dark, 0.1);
+    padding: 1.5rem;
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+  }
+
+  .modal-footer {
+    border-top: 1px solid rgba($dark, 0.1);
+    padding: 1.5rem;
+  }
+
+  .form-control {
+    background-color: $light;
+    border: 1px solid rgba($dark, 0.1);
+    border-radius: bootstrap.$border-radius;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+
+    &:focus {
+      border-color: $primary;
+      box-shadow: 0 0 0 0.2rem rgba($primary, 0.25);
+    }
+  }
+
+  .form-label {
+    color: $dark;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  .btn {
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    border-radius: bootstrap.$border-radius;
+    transition: all 0.3s ease;
+
+    &-primary {
+      background-color: $primary;
+      border-color: $primary;
+
+      &:hover {
+        background-color: darken($primary, 10%);
+        border-color: darken($primary, 10%);
+      }
+    }
+
+    &-secondary {
+      background-color: $secondary;
+      border-color: $secondary;
+
+      &:hover {
+        background-color: darken($secondary, 10%);
+        border-color: darken($secondary, 10%);
+      }
+    }
+  }
+
+  .form-text {
+    color: $sub-text;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+  }
+
+  .invalid-feedback {
+    color: $danger;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+  }
+}
+  

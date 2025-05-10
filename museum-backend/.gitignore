@@ -1,0 +1,14 @@
+# 後端專屬忽略
+.env                  # 後端憑證
+dump/                 # 資料庫匯出
+*.sql                 # SQL dump
+/dist-server/         # 例如用 tsc 或 webpack 打包
+
+
+# —— 忽略所有常見圖片檔 —— #
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.webp

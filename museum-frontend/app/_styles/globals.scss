@@ -1,0 +1,131 @@
+// Foundation
+@use 'foundation/palette' as *;
+@use 'foundation/mixins' as *;
+@use 'foundation/typography' as *;
+
+// Vendors
+@use 'vendors/bootstrap-override';
+
+// Components
+@use 'components/buttons';
+@use 'components/alerts';
+
+// 導入所有 bootstrap 樣式
+@use 'bootstrap/scss/bootstrap' as bootstrap;
+
+// google Noto Serif TC 字體
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700&display=swap');
+
+// Global styles
+:root {
+  --primary: #{$primary};
+  --secondary: #{$secondary};
+  --success: #{$success};
+  --danger: #{$danger};
+  --warning: #{$warning};
+  --info: #{$info};
+  --light: #{$light};
+  --dark: #{$dark};
+  --main-bg: #{$main-bg};
+  --sub-bg: #{$sub-bg};
+  --main-text: #{$main-text};
+  --sub-text: #{$sub-text};
+}
+
+// 定義中文字體用
+body {
+  font-family: 'Noto Serif TC', 'Noto Serif TC Regular', Helvetica, Arial, 'PingFang TC',
+    '苹方-繁', 'Heiti TC', '黑體-繁', 'Microsoft JhengHei', '微軟正黑體',
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    'Noto Sans',
+    'Liberation Sans',
+    sans-serif,
+    'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  color: var(--main-text);
+  line-height: 1.6;
+  background-color: $main-bg;
+  background-image: url(http://www.transparenttextures.com/patterns/asfalt-dark.png);
+}
+
+// 標題樣式
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Noto Serif TC', serif;
+  color: $main-text;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+h1 { font-size: 2.5rem; font-weight: 700; margin-top: 2rem; }
+h2 { font-size: 2rem; font-weight: 600; margin-top: 1.75rem; }
+h3 { font-size: 1.75rem; font-weight: 600; margin-top: 1.5rem; }
+h4 { font-size: 1.5rem; font-weight: 500; margin-top: 1.25rem; }
+h5 { font-size: 1.25rem; font-weight: 500; margin-top: 1rem; }
+h6 { font-size: 1rem; font-weight: 500; margin-top: 1rem; }
+
+// 段落樣式
+p {
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+  color: $main-text;
+  
+  &.lead {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: $sub-text;
+  }
+  
+  &.small {
+    font-size: 0.875rem;
+    color: $sub-text;
+  }
+}
+
+// Custom scrollbar
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--light);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--secondary);
+  border-radius: 4px;
+  
+  &:hover {
+    background: darken($secondary, 10%);
+  }
+}
+
+// Selection
+::selection {
+  background-color: var(--primary);
+  color: white;
+}
+
+// Focus outline
+:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+// Disabled elements
+[disabled] {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+
+
+
+
+

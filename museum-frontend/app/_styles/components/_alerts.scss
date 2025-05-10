@@ -1,0 +1,63 @@
+@use '../foundation/palette' as *;
+@use '../foundation/mixins' as *;
+
+.alert {
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: $main-text;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+
+  // Variants
+  &-primary {
+    background-color: $alert-primary;
+    border-color: darken($alert-primary, 5%);
+  }
+
+  &-secondary {
+    background-color: $alert-secondary;
+    border-color: darken($alert-secondary, 5%);
+  }
+
+  &-success {
+    background-color: $alert-success;
+    border-color: darken($alert-success, 5%);
+  }
+
+  &-danger {
+    background-color: $alert-danger;
+    border-color: darken($alert-danger, 5%);
+  }
+
+  &-warning {
+    background-color: $alert-warning;
+    border-color: darken($alert-warning, 5%);
+  }
+
+  &-info {
+    background-color: $alert-info;
+    border-color: darken($alert-info, 5%);
+  }
+
+  // Dismissible
+  &-dismissible {
+    padding-right: 3rem;
+
+    .btn-close {
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 1rem;
+      color: inherit;
+    }
+  }
+
+  // With icon
+  .icon {
+    margin-right: 0.5rem;
+  }
+} 

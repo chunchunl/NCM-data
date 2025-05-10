@@ -1,0 +1,132 @@
+@use '../foundation/palette' as *;
+@use '../foundation/mixins' as *;
+
+.btn {
+  padding: 8px 16px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
+  box-shadow:
+    inset 0 0 6px rgba(255, 255, 255, 0.2),
+    0 4px 10px rgba(0, 0, 0, 0.15),
+    0 0 8px rgba(255, 255, 255, 0.05);
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow:
+      inset 0 0 8px rgba(255, 255, 255, 0.4),
+      0 6px 12px rgba(0, 0, 0, 0.2),
+      0 0 10px rgba(255, 255, 255, 0.1);
+  }
+
+  &:active {
+    transform: scale(0.98);
+    box-shadow:
+      inset 0 0 4px rgba(255, 255, 255, 0.2),
+      0 2px 6px rgba(0, 0, 0, 0.15),
+      0 0 6px rgba(255, 255, 255, 0.05);
+  }
+
+  &-primary {
+    background: rgba($primary, 0.6);
+    border-color: $primary;
+    color: #fff;
+  }
+
+  &-secondary {
+    background: rgba($secondary, 0.6);
+    border-color: $secondary;
+    color: #fff;
+  }
+
+  &-danger {
+    background: rgba($danger, 0.6);
+    border-color: $danger;
+    color: #fff;
+  }
+
+  &-success {
+    background: rgba($success, 0.6);
+    border-color: $success;
+    color: #fff;
+  }
+
+  &-warning {
+    background: rgba($warning, 0.6);
+    border-color: $warning;
+    color: #fff;
+  }
+
+  &-info {
+    background: rgba($info, 0.6);
+    border-color: $info;
+    color: #fff;
+  }
+
+  &-light {
+    background: rgba($light, 0.4);
+    border-color: $light;
+    color: $main-text;
+  }
+
+  &-dark {
+    background: rgba($dark, 0.6);
+    border-color: $dark;
+    color: #fff;
+  }
+
+  &-cancel {
+    background: rgba($btn-cancel, 0.6);
+    border-color: $btn-cancel;
+    color: $main-text;
+  }
+
+  &-link {
+    background: transparent;
+    border: none;
+    color: $primary;
+    padding: 0;
+    font-weight: 500;
+    text-decoration: underline;
+    box-shadow: none;
+    backdrop-filter: none;
+    border-radius: 0;
+
+    &:hover {
+      color: $secondary;
+      text-decoration: none;
+      box-shadow: 0 0 4px rgba($secondary, 0.2);
+    }
+
+    &:active {
+      box-shadow: 0 0 2px rgba($secondary, 0.3);
+    }
+  }
+
+  // Icon
+  .icon {
+    margin-right: 0.5rem;
+  }
+}
+
+// Link button
+.btn-link {
+  color: $primary;
+  text-decoration: none;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+
+  &:hover {
+    color: darken($primary, 10%);
+    text-decoration: underline;
+  }
+
+  &:active {
+    color: darken($primary, 15%);
+  }
+} 
