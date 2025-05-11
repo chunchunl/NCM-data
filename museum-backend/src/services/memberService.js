@@ -1,6 +1,8 @@
 import db from '../config/database.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import nodemailer from 'nodemailer';
+import transporter from '../config/nodemailer.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
@@ -412,6 +414,49 @@ const deleteAccount = async (memberId, password) => {
   }
 };
 
+const sendResetPasswordEmail = async (email, verificationCode) => {
+  try {
+    console.log('開始發送驗證碼郵件...');
+    console.log('收件人:', email);
+    console.log('驗證碼:', verificationCode);
+
+    // 創建郵件內容
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: '故瓷博物院 - 密碼重設驗證碼',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #333;">密碼重設驗證碼</h2>
+          <p>您好，</p>
+          <p>您的密碼重設驗證碼是：</p>
+          <div style="background-color: #f5f5f5; padding: 20px; text-align: center; font-size: 24px; letter-spacing: 5px; margin: 20px 0;">
+            <strong>${verificationCode}</strong>
+          </div>
+          <p>此驗證碼將在 15 分鐘後失效。</p>
+          <p>如果您沒有請求重設密碼，請忽略此郵件。</p>
+          <p>謝謝！</p>
+          <p>故瓷博物院團隊</p>
+        </div>
+      `
+    };
+
+    console.log('郵件配置:', {
+      from: mailOptions.from,
+      to: mailOptions.to,
+      subject: mailOptions.subject
+    });
+
+    // 發送郵件
+    const info = await transporter.sendMail(mailOptions);
+    console.log('郵件發送成功:', info.messageId);
+    return true;
+  } catch (error) {
+    console.error('發送驗證碼郵件時發生錯誤:', error);
+    throw new Error('發送驗證碼郵件失敗');
+  }
+};
+
 export {
   register,
   login,
@@ -422,5 +467,6 @@ export {
   sendPasswordChangeEmail,
   sendEmailChangeEmail,
   confirmEmailChange,
-  deleteAccount
+  deleteAccount,
+  sendResetPasswordEmail
 }; 

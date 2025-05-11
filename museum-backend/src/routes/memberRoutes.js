@@ -10,6 +10,7 @@ import {
   sendEmailChangeEmail,
   confirmEmailChange,
   deleteAccount,
+  sendResetPasswordEmail
 } from "../services/memberService.js";
 import { authenticateToken } from "../middleware/auth.js";
 import upload from "../middleware/upload.js";
@@ -20,6 +21,9 @@ import jwt from "jsonwebtoken";
 import passport from "../config/passport.js";
 import bcrypt from "bcryptjs";
 import pool from "../config/database.js";
+import crypto from "crypto";
+import nodemailer from "nodemailer";
+import transporter from '../config/nodemailer.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -539,6 +543,76 @@ router.get("/me", authenticateToken, async (req, res) => {
     res.status(500).json({
       success: false,
       message: "獲取用戶資料失敗",
+    });
+  }
+});
+
+// 忘記密碼
+router.post('/forgot-password', async (req, res) => {
+  try {
+    const { email } = req.body;
+    
+    // 生成6位數驗證碼
+    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    
+    // 將驗證碼存入資料庫，有效期15分鐘
+    await pool.query(
+      'UPDATE members SET reset_token = ?, reset_token_expiry = DATE_ADD(NOW(), INTERVAL 15 MINUTE) WHERE email = ? AND is_deleted = FALSE',
+      [verificationCode, email]
+    );
+
+    // 發送驗證碼郵件
+    await sendResetPasswordEmail(email, verificationCode);
+    
+    res.json({ 
+      success: true, 
+      message: '驗證碼已發送到您的郵箱' 
+    });
+  } catch (error) {
+    console.error('忘記密碼錯誤:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: error.message || '發送驗證碼失敗' 
+    });
+  }
+});
+
+// 重設密碼
+router.post('/reset-password', async (req, res) => {
+  try {
+    const { email, verificationCode, newPassword } = req.body;
+
+    // 檢查驗證碼是否有效
+    const [members] = await pool.query(
+      'SELECT * FROM members WHERE email = ? AND reset_token = ? AND reset_token_expiry > NOW() AND is_deleted = FALSE',
+      [email, verificationCode]
+    );
+
+    if (members.length === 0) {
+      return res.status(400).json({ 
+        success: false,
+        message: '驗證碼無效或已過期' 
+      });
+    }
+
+    // 加密新密碼
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // 更新密碼並清除驗證碼
+    await pool.query(
+      'UPDATE members SET password = ?, reset_token = NULL, reset_token_expiry = NULL WHERE email = ?',
+      [hashedPassword, email]
+    );
+
+    res.json({ 
+      success: true,
+      message: '密碼重設成功' 
+    });
+  } catch (error) {
+    console.error('重設密碼錯誤:', error);
+    res.status(500).json({ 
+      success: false,
+      message: '重設密碼失敗' 
     });
   }
 });

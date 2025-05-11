@@ -15,11 +15,14 @@ export default function AuthModal({ show, onHide, onSubmit }) {
   const router = useRouter()
 
   const [isLogin, setIsLogin] = useState(true)
+  const [isForgotPassword, setIsForgotPassword] = useState(false)
+  const [isVerificationSent, setIsVerificationSent] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
     confirmPassword: '',
+    verificationCode: '',
   })
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
@@ -166,6 +169,89 @@ export default function AuthModal({ show, onHide, onSubmit }) {
     }
   }
 
+  const handleForgotPassword = async (e) => {
+    e.preventDefault()
+    if (!formData.email) {
+      showToast('error', '請輸入電子郵件')
+      return
+    }
+
+    setLoading(true)
+    try {
+      const res = await fetch('http://localhost:3005/api/members/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: formData.email.trim() }),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        throw new Error(data.message || '發送驗證碼失敗')
+      }
+
+      showToast('success', '驗證碼已發送到您的郵箱')
+      setIsVerificationSent(true)
+    } catch (err) {
+      console.error('忘記密碼錯誤:', err)
+      showToast('error', err.message || '系統錯誤，請稍後再試')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleResetPassword = async (e) => {
+    e.preventDefault()
+    if (!formData.verificationCode) {
+      showToast('error', '請輸入驗證碼')
+      return
+    }
+    if (!formData.password) {
+      showToast('error', '請輸入新密碼')
+      return
+    }
+    if (formData.password !== formData.confirmPassword) {
+      showToast('error', '兩次輸入的密碼不一致')
+      return
+    }
+
+    setLoading(true)
+    try {
+      const res = await fetch('http://localhost:3005/api/members/reset-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: formData.email.trim(),
+          verificationCode: formData.verificationCode,
+          newPassword: formData.password,
+        }),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        throw new Error(data.message || '重設密碼失敗')
+      }
+
+      showToast('success', '密碼重設成功，請使用新密碼登入')
+      setIsForgotPassword(false)
+      setIsVerificationSent(false)
+      setFormData({ name: '', email: '', password: '', confirmPassword: '', verificationCode: '' })
+    } catch (err) {
+      console.error('重設密碼錯誤:', err)
+      showToast('error', err.message || '系統錯誤，請稍後再試')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const toggleForgotPassword = () => {
+    setIsForgotPassword(!isForgotPassword)
+    setIsVerificationSent(false)
+    setErrors({})
+    setFormData({ name: '', email: '', password: '', confirmPassword: '', verificationCode: '' })
+  }
+
   /* ---------- 其他 ---------- */
   const handleGoogleLogin = () => {
     window.location.href = 'http://localhost:3005/api/members/auth/google'
@@ -184,18 +270,28 @@ export default function AuthModal({ show, onHide, onSubmit }) {
       onHide={() => {
         if (onHide) onHide()
         setErrors({})
-        setFormData({ name: '', email: '', password: '', confirmPassword: '' })
+        setFormData({ name: '', email: '', password: '', confirmPassword: '', verificationCode: '' })
+        setIsForgotPassword(false)
+        setIsVerificationSent(false)
       }}
       centered
     >
       <Modal.Header closeButton>
-        <Modal.Title>{isLogin ? '會員登入' : '註冊新帳號'}</Modal.Title>
+        <Modal.Title>
+          {isForgotPassword
+            ? isVerificationSent
+              ? '重設密碼'
+              : '忘記密碼'
+            : isLogin
+            ? '會員登入'
+            : '註冊新帳號'}
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {errors.submit && <Alert variant="danger">{errors.submit}</Alert>}
 
-        <Form onSubmit={handleSubmit}>
-          {!isLogin && (
+        <Form onSubmit={isForgotPassword ? (isVerificationSent ? handleResetPassword : handleForgotPassword) : handleSubmit}>
+          {!isLogin && !isForgotPassword && (
             <FloatingField
               controlId="name"
               name="name"
@@ -224,24 +320,43 @@ export default function AuthModal({ show, onHide, onSubmit }) {
             value={formData.email}
             onChange={handleChange}
             errorMsg={errors.email}
+            disabled={isVerificationSent}
           />
 
-          <FloatingField
-            controlId="password"
-            name="password"
-            type="password"
-            label={
-              <>
-                <FaLock className="icon" /> 密碼
-              </>
-            }
-            placeholder="請輸入密碼"
-            value={formData.password}
-            onChange={handleChange}
-            errorMsg={errors.password}
-          />
+          {isForgotPassword && isVerificationSent && (
+            <FloatingField
+              controlId="verificationCode"
+              name="verificationCode"
+              label={
+                <>
+                  <FaEnvelope className="icon" /> 驗證碼
+                </>
+              }
+              placeholder="請輸入驗證碼"
+              value={formData.verificationCode}
+              onChange={handleChange}
+              errorMsg={errors.verificationCode}
+            />
+          )}
 
-          {!isLogin && (
+          {(!isForgotPassword || (isForgotPassword && isVerificationSent)) && (
+            <FloatingField
+              controlId="password"
+              name="password"
+              type="password"
+              label={
+                <>
+                  <FaLock className="icon" /> {isForgotPassword ? '新密碼' : '密碼'}
+                </>
+              }
+              placeholder={isForgotPassword ? '請輸入新密碼' : '請輸入密碼'}
+              value={formData.password}
+              onChange={handleChange}
+              errorMsg={errors.password}
+            />
+          )}
+
+          {(!isLogin && !isForgotPassword) || (isForgotPassword && isVerificationSent) ? (
             <FloatingField
               controlId="confirmPassword"
               name="confirmPassword"
@@ -256,7 +371,7 @@ export default function AuthModal({ show, onHide, onSubmit }) {
               onChange={handleChange}
               errorMsg={errors.confirmPassword}
             />
-          )}
+          ) : null}
 
           <div className="d-grid gap-2 mt-4">
             <button
@@ -265,37 +380,69 @@ export default function AuthModal({ show, onHide, onSubmit }) {
               disabled={loading}
             >
               {loading
-                ? isLogin
+                ? isForgotPassword
+                  ? isVerificationSent
+                    ? '重設密碼中...'
+                    : '發送中...'
+                  : isLogin
                   ? '登入中...'
                   : '註冊中...'
+                : isForgotPassword
+                ? isVerificationSent
+                  ? '重設密碼'
+                  : '發送驗證碼'
                 : isLogin
-                  ? '登入'
-                  : '註冊'}
+                ? '登入'
+                : '註冊'}
             </button>
 
-            <div className="text-center my-3">
-              <span className="text-muted">或</span>
-            </div>
+            {!isForgotPassword && (
+              <>
+                <div className="text-center my-3">
+                  <span className="text-muted">或</span>
+                </div>
 
-            <button
-              type="button"
-              className="btn btn-outline-primary"
-              onClick={handleGoogleLogin}
-            >
-              <FaGoogle className="icon" />
-              使用 Google {isLogin ? '登入' : '註冊'}
-            </button>
+                <button
+                  type="button"
+                  className="btn btn-outline-primary"
+                  onClick={handleGoogleLogin}
+                >
+                  <FaGoogle className="icon" />
+                  使用 Google {isLogin ? '登入' : '註冊'}
+                </button>
+              </>
+            )}
           </div>
         </Form>
 
         <div className="text-center mt-3">
-          <button type="button" className="btn btn-link" onClick={toggleMode}>
-            {isLogin ? '還沒有帳號？立即註冊' : '已有帳號？立即登入'}
-          </button>
-          {isLogin && (
-            <a href="/forgot-password" className="btn btn-link">
-              忘記密碼？
-            </a>
+          {isForgotPassword ? (
+            <button
+              type="button"
+              className="btn btn-link"
+              onClick={toggleForgotPassword}
+            >
+              返回登入
+            </button>
+          ) : (
+            <>
+              <button
+                type="button"
+                className="btn btn-link"
+                onClick={toggleMode}
+              >
+                {isLogin ? '還沒有帳號？立即註冊' : '已有帳號？立即登入'}
+              </button>
+              {isLogin && (
+                <button
+                  type="button"
+                  className="btn btn-link"
+                  onClick={toggleForgotPassword}
+                >
+                  忘記密碼？
+                </button>
+              )}
+            </>
           )}
         </div>
       </Modal.Body>
