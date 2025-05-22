@@ -1,0 +1,174 @@
+// sidebar.module.scss
+
+@use '../../../../_styles/foundation/palette' as *;
+@use '../../../../_styles/foundation/_mixins' as *;
+
+$vip-color: #d4af37; // VIP 金色
+$regular-color: #842929; // 一般紅棕
+$hover-scale: 1.03;
+$active-scale: 1.3;
+
+.sidebar {
+  margin-top: 150px;
+  padding: 20px;
+  border: 1px solid #000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.userInfo {
+  position: relative;
+  margin-top: -70px;
+  text-align: center;
+
+  .roundedCircle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid rgb(255, 255, 255);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 1;
+    object-fit: cover;
+  }
+
+ 
+
+  h4 {
+    margin-top: 10px;
+    z-index: 1;
+    position: relative;
+  }
+
+  p {
+    margin-top: 5px;
+    border: 1px solid #000;
+    border-radius: 6px;
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 0.9rem;
+    position: relative;
+    z-index: 1;
+
+    &.vip {
+      background-color: $vip-color;
+      color: white;
+      border: none;
+    }
+
+    &.regular {
+      background-color: $regular-color;
+      color: white;
+      border: none;
+    }
+  }
+}
+
+.avatarContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.decorationIcon {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 100px;
+  z-index: 2;
+}
+
+.nav {
+  margin-top: 20px;
+  padding: 2rem 1rem;
+
+  .hrLine {
+    border-top: 2px dashed #000;
+    margin: 10px 0;
+  }
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: $regular-color;
+  text-decoration: none;
+  padding: 2rem 1rem;
+  border-radius: 4px;
+  transition: all 0.3s ease, transform 0.3s ease;
+  transform-origin: center;
+  position: relative;
+  overflow: hidden;
+
+  .iconSize {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+  }
+
+  .label {
+    display: block;
+    transition: color 0.3s ease;
+  }
+
+  .subLabel {
+    display: none;
+    transition: color 0.3s ease;
+  }
+
+  &:hover {
+    background-color: rgba(247, 127, 8, 1);
+    transform: translateY(-2px) scale($hover-scale);
+
+    
+
+    .iconSize {
+      transform: scale(1.2) rotate(3deg);
+    }
+  }
+
+  &.active {
+    background-color: #f77f08;
+    color: white;
+
+    .iconSize {
+      transform: scale($active-scale);
+    }
+  }
+}
+
+@include media-breakpoint-down(md) {
+  .nav {
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .navLink {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 25%;
+    padding: 0.5rem;
+    text-align: center;
+
+    .label {
+      display: none;
+    }
+
+    .subLabel {
+      display: block;
+      margin-top: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .iconSize {
+      font-size: 1.5rem;
+    }
+  }
+
+  .hrLine {
+    display: none;
+  }
+}

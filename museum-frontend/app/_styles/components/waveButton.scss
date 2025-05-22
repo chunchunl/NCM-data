@@ -1,0 +1,62 @@
+/* 波浪button */
+
+// .btn-wave {
+//   display: inline-block;
+//   position: relative;
+//   z-index: 1;
+//   overflow: hidden;
+//   text-decoration: none;
+//   font-family: sans-serif;
+//   font-weight: 600;
+//   font-size: 1em;
+//   padding: 0.75em 1em;
+//   color: #7b2d12;
+//   border: 0.15em solid #7b2d12;
+//   border-radius: 6px;
+//   transition: 4s;
+
+//   &:before,
+//   &:after {
+//     content: '';
+//     position: absolute;
+//     top: -4em;
+//     z-index: -1;
+//     width: 200%;
+//     aspect-ratio: 1;
+//     border: none;
+//     border-radius: 40%;
+//     background-color: #7b2c1230;
+//     transition: 4s;
+//   }
+
+//   &:before {
+//     left: -70%;
+//     transform: translate3d(0, 9em, 0) rotate(-340deg);
+//   }
+
+//   &:after {
+//     right: -70%;
+//     transform: translate3d(0, 9em, 0) rotate(340deg);
+//   }
+
+//   &:hover,
+//   &:focus {
+//     color: white;
+//   }
+
+//   &:hover {
+//     &:before,
+//     &:after {
+//       transform: none;
+//       background-color: #7b2c12a9;
+//     }
+//   }
+
+//   &:focus {
+//     &:before,
+//     &:after {
+//       transform: none;
+//       background-color: #7b2c12a9;
+//     }
+//   }
+// }

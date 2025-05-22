@@ -2,12 +2,11 @@
 
 import React, { useState, useEffect } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
-import '../_styles/header_style.scss'
-import '@/app/_styles/globals.scss'
-import '@/app/_styles/formCustom.scss'
-import '@/app/_styles/authModal.scss'
-import AuthModal from '@/app/_components/authModal'
-// import { IconName } from "react-icons/fa";
+import '../_styles/navbar.scss'
+import AuthModal from '@/app/_components/Auth/AuthModal'
+import { useAuth } from '@/app/_hooks/useAuth'
+// import { useAuth } from '@/app/_components/Auth/AuthProvider'
+
 import {
   FaUserCircle,
   FaCommentDots,
@@ -18,21 +17,34 @@ import {
   FaShoppingCart,
   FaUser,
 } from 'react-icons/fa'
+import Image from 'next/image'
 
 // toast
 import { useToast } from './ToastManager'
+import { io } from 'socket.io-client'
+import ChatSidebar from './Chat/ChatSidebar'
 
 export default function Navbar() {
   const pathname = usePathname()
   const router = useRouter()
   const { showToast } = useToast()
+  const {
+    member,
+    isLoggedIn,
+    isLoading,
+    login,
+    logout,
+    googleLogin,
+    updateMember,
+    avatarSrc,
+    token,
+  } = useAuth()
+
   /* ---------------------- State ---------------------- */
   const [isScrolled, setIsScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [member, setMember] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isChatOpen, setIsChatOpen] = useState(false)
 
   /* -------------------- Effects ---------------------- */
   // 1. 監聽捲動：縮小／還原 Header
@@ -49,70 +61,6 @@ export default function Navbar() {
     document.body.style.overflow = menuOpen ? 'hidden' : ''
   }, [menuOpen])
 
-  // 3. 檢查登入狀態並獲取會員資料
-  useEffect(() => {
-    const loadMemberData = async () => {
-      try {
-        const token = localStorage.getItem('token')
-        if (!token) {
-          setMember(null)
-          setIsLoggedIn(false)
-          setIsLoading(false)
-          return
-        }
-
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/members/me`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        )
-
-        const data = await response.json()
-        if (data.success) {
-          setMember(data.data)
-          setIsLoggedIn(true)
-        } else {
-          console.error('獲取會員資料失敗:', data.message)
-          localStorage.removeItem('token')
-          setMember(null)
-          setIsLoggedIn(false)
-        }
-      } catch (error) {
-        console.error('獲取會員資料時發生錯誤:', error)
-        localStorage.removeItem('token')
-        setMember(null)
-        setIsLoggedIn(false)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    loadMemberData()
-
-    // 監聽 localStorage 變化
-    const handleStorageChange = (e) => {
-      if (e.key === 'member' || e.key === 'token') {
-        loadMemberData()
-      }
-    }
-
-    window.addEventListener('storage', handleStorageChange)
-
-    // 自定義事件監聽
-    const handleMemberUpdate = () => {
-      loadMemberData()
-    }
-    window.addEventListener('memberUpdate', handleMemberUpdate)
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange)
-      window.removeEventListener('memberUpdate', handleMemberUpdate)
-    }
-  }, [])
-
   /* -------------------- Handlers --------------------- */
   const toggleMenu = () => setMenuOpen((prev) => !prev)
   const closeMenu = () => setMenuOpen(false)
@@ -122,29 +70,64 @@ export default function Navbar() {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem('token')
-    setMember(null)
-    setIsLoggedIn(false)
+    logout()
     router.push('/')
-    showToast('info', '您已登出 👋')
   }
 
   const handleCloseLoginModal = () => {
     setIsLoginModalOpen(false)
   }
 
-  const handleSubmitLogin = (formData) => {
-    setMember(formData.data)
-    setIsLoggedIn(true)
-    setIsLoginModalOpen(false)
-    showToast('success', '登入成功 🎉')
+  const handleSubmitLogin = async (formData) => {
+    try {
+      // 1. 呼叫後端登入 API（使用 NEXT_PUBLIC_API_URL）
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/members/login`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          credentials: 'include',
+          body: JSON.stringify({
+            email: formData.email,
+            password: formData.password,
+          }),
+        }
+      )
 
-    // 跳轉到會員中心
-    router.push('/member/center')
+      // 2. 解析回傳
+      const json = await res.json()
+      if (!res.ok || !json.success) {
+        throw new Error(json.message || `登入失敗：HTTP ${res.status}`)
+      }
+
+      const { user, token } = json.data
+
+      // 3. 呼叫 login 更新全局狀態
+      login(user, token)
+
+      // 4. UI 處理：關 Modal、Toast、轉頁
+      setIsLoginModalOpen(false)
+      showToast('success', '登入成功 🎉')
+      router.push('/member/center')
+    } catch (err) {
+      console.error('登入錯誤：', err)
+      showToast('danger', `登入失敗：${err.message || '未知錯誤'}`)
+    }
   }
 
   const handleNavigateToMemberCenter = () => {
     router.push('/member/center')
+  }
+
+  const handleChatClick = () => {
+    if (!isLoggedIn) {
+      setIsLoginModalOpen(true)
+      return
+    }
+    setIsChatOpen(!isChatOpen)
   }
 
   //管理區不需要選單列
@@ -154,21 +137,23 @@ export default function Navbar() {
 
   return (
     <>
-      {/* <div style={{ border: '2px solid red', height: 80 }}>導覽列/選單</div> */}
-
       <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
         <nav className="nav-container">
           {/* Logo */}
           <a href="/" className="logo-container logo" onClick={closeMenu}>
-            <img
+            <Image
               src="/img/logo-navbar/logo-navbar-light-1.svg"
               alt="國立故瓷博物館"
               className="large-logo"
+              width={200}
+              height={50}
             />
-            <img
+            <Image
               src="/img/ncmLogo/logo-ncm.png"
               alt="國立故瓷博物館"
               className="small-logo"
+              width={40}
+              height={40}
             />
           </a>
 
@@ -194,20 +179,31 @@ export default function Navbar() {
               {!isLoading &&
                 (isLoggedIn ? (
                   <div className="user-greeting">
-                    <FaUserCircle />
+                    {/* 使用者頭像 */}
+                    <img
+                      src={avatarSrc}
+                      alt="avatar"
+                      width={40}
+                      height={40}
+                      className="user-profile-avatar"
+                      style={{ objectFit: 'cover', borderRadius: '50%' }}
+                    />
                     <div className="user-dropdown">
                       <div className="user-profile-header">
                         <img
-                          src={member.avatar || '/img/ncmLogo/logo-ncm.png'}
+                          src={avatarSrc}
                           alt="avatar"
+                          width={60}
+                          height={60}
                           className="user-profile-avatar"
+                          style={{ objectFit: 'cover', borderRadius: '50%' }}
                         />
                         <div className="user-profile-info">
                           <div className="user-profile-name">
-                            {member.name || '未設定姓名'}
+                            {member?.name || '未設定姓名'}
                           </div>
                           <div className="user-profile-email">
-                            {member.email}
+                            {member?.email}
                           </div>
                         </div>
                       </div>
@@ -219,7 +215,11 @@ export default function Navbar() {
                       >
                         <FaUser className="icon" /> 個人檔案
                       </a>
-                      <a href="#" className="user-dropdown-item">
+                      <a
+                        href="#"
+                        className="user-dropdown-item"
+                        onClick={handleChatClick}
+                      >
                         <span className="notification-dot">12</span>
                         <FaCommentDots className="icon" /> 我的訊息
                       </a>
@@ -272,15 +272,20 @@ export default function Navbar() {
                 <>
                   <div className="mobile-profile-header">
                     <img
-                      src={member.avatar || '/img/ncmLogo/logo-ncm.png'}
+                      src={member?.avatar || '/img/ncmLogo/logo-ncm.png'}
                       alt="avatar"
+                      width={50}
+                      height={50}
                       className="mobile-profile-avatar"
+                      style={{ objectFit: 'cover', borderRadius: '50%' }}
                     />
                     <div className="mobile-profile-info">
                       <div className="mobile-profile-name">
-                        {member.name || '未設定姓名'}
+                        {member?.name || '未設定姓名'}
                       </div>
-                      <div className="mobile-profile-email">{member.email}</div>
+                      <div className="mobile-profile-email">
+                        {member?.email}
+                      </div>
                     </div>
                   </div>
                   <button
@@ -310,6 +315,14 @@ export default function Navbar() {
         show={isLoginModalOpen}
         onHide={handleCloseLoginModal}
         onSubmit={handleSubmitLogin}
+      />
+
+      {/* 聊天室側邊欄 */}
+      <ChatSidebar 
+        isOpen={isChatOpen}
+        onClose={() => setIsChatOpen(false)}
+        receiverId={member?.role === 'member' ? 93 : member?.role === 'staff' ? 92 : undefined}
+        isStaff={member?.role === 'staff'}
       />
     </>
   )

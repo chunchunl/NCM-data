@@ -2,26 +2,26 @@
 @use 'mixins' as *;
 
 // Reset
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+// * {
+//   margin: 0;
+//   padding: 0;
+//   box-sizing: border-box;
+// }
 
-html {
-  font-size: 16px;
-  -webkit-text-size-adjust: 100%;
-}
+// html {
+//   font-size: 16px;
+//   -webkit-text-size-adjust: 100%;
+// }
 
-body {
-  font-family: $font-family-base;
-  font-size: $font-size-base;
-  line-height: 1.5;
-  color: $dark;
-  background-color: $main-bg;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+// body {
+//   font-family: $font-family-base;
+//   font-size: $font-size-base;
+//   line-height: 1.5;
+//   color: $dark;
+//   // background-color: $main-bg;
+//   -webkit-font-smoothing: antialiased;
+//   -moz-osx-font-smoothing: grayscale;
+// }
 
 // Headings
 h1, h2, h3, h4, h5, h6 {

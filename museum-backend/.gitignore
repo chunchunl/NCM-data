@@ -47,6 +47,9 @@ dump/                 # 資料庫匯出
 *.sql                 # SQL dump
 /dist-server/         # 例如用 tsc 或 webpack 打包
 
+# Firebase Admin SDK 私鑰
+/src/config/serviceAccountKey.json
+
 
 # —— 忽略所有常見圖片檔 —— #
 *.png

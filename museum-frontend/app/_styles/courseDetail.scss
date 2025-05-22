@@ -1,0 +1,629 @@
+// 變數
+:root {
+    --primary-color: #7B2D12;
+    --secondary-color: #D4A373;
+    --accent-color: #E9D5C4;
+    --text-color: #2C3E50;
+    --light-bg: #FAF6F1;
+    --dark-bg: #2C3E50;
+  }
+  
+  // 基本樣式
+  body {
+    font-family: "Noto Serif TC", serif;
+    color: var(--text-color);
+    background-color: var(--light-bg);
+  }
+  
+  
+  // 課程橫幅
+  .course-hero {
+    width: 100%;
+    height: 80vh;
+    background-size: cover;
+    background-position: center;
+    // background-attachment: fixed;
+    position: relative;
+  
+    .hero-content {
+      position: absolute;
+      bottom: 20%;
+      left: 0;
+      right: 0;
+      color: white;
+    }
+  
+    .hero-badge {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-weight: 500;
+      display: inline-block;
+    }
+  }
+  
+  // 3D
+  .spline-container {
+    position: relative;
+    margin: auto;
+    iframe {
+      // position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 700px;
+    }
+  }
+  
+  // 課程資訊卡片
+  .course-info-card {
+    background: white;
+    border-radius: 6px;
+    padding: 5rem 4rem 5rem 4rem;
+    margin-top: -100px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  }
+  
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin: 2rem 0;
+  
+    .info-item {
+      text-align: center;
+      padding: 1.5rem;
+      background: var(--light-bg);
+      border-radius: 6px;
+      transition: transform 0.3s ease;
+  
+      &:hover {
+        transform: translateY(-5px);
+      }
+  
+      i {
+        font-size: 2rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+      }
+    }
+  }
+  
+  // 課程內容
+  .course-content {
+    padding: 5rem 0;
+  
+    .content-section {
+      margin-top: 4rem;
+      padding: 2rem;
+      background: white;
+      border-radius: 6px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+  
+      .section-title {
+        color: var(--primary-color);
+        font-weight: 700;
+        margin-bottom: 2rem;
+        position: relative;
+        padding-left: 1rem;
+  
+        &::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          width: 4px;
+          background: var(--primary-color);
+          border-radius: 6px;
+        }
+      }
+  
+      .feature-list {
+        list-style: none;
+        padding: 0;
+  
+        li {
+          margin-bottom: 1.5rem;
+          padding: 1rem;
+          background: var(--light-bg);
+          border-radius: 6px;
+          display: flex;
+          align-items: center;
+  
+          i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-right: 1rem;
+          }
+        }
+      }
+    }
+  }
+  
+  // 教師介紹
+  .instructor-card {
+    display: flex;
+    gap: 2rem;
+    align-items: start;
+    padding: 2rem;
+    background: var(--light-bg);
+    border-radius: 6px;
+  
+    .instructor-avatar {
+      width: 300px;
+      height: 300px;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+  
+    .instructor-info {
+      flex: 1;
+  
+      .experience-list {
+        list-style: none;
+        padding: 0;
+        margin-top: 1.5rem;
+  
+        li {
+          position: relative;
+          padding-left: 2rem;
+          margin-bottom: 1rem;
+  
+          &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 8px;
+            height: 8px;
+            background: var(--primary-color);
+            border-radius: 6px;
+          }
+        }
+      }
+    }
+  }
+  
+  // 報名區塊
+  .enrollment-section {
+    position: sticky;
+    top: 50px;
+    background: white;
+    border-radius: 6px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  
+    .price-tag {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+  
+    .original-price {
+      text-decoration: line-through;
+      color: #999;
+      font-size: 1.2rem;
+      white-space: nowrap;
+    }
+  
+    .enrollment-features {
+      margin: 2rem 0;
+  
+      li {
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+  
+        i {
+          color: var(--primary-color);
+          margin-right: 1rem;
+        }
+      }
+    }
+  
+    .btn-enroll {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 6px;
+      font-weight: 500;
+      width: 100%;
+      margin-bottom: 1rem;
+      transition: all 0.3s ease;
+  
+      &:hover {
+        background: #5a200d;
+        transform: translateY(-2px);
+      }
+    }
+  
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+  
+      &:hover {
+        background: var(--primary-color);
+        color: white;
+      }
+    }
+  }
+  
+  // 相關課程
+  .related-courses {
+    padding: 5rem 0;
+    background: var(--light-bg);
+  
+    .course-card {
+      background: white;
+      border-radius: 6px;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+  
+      &:hover {
+        transform: translateY(-10px);
+      }
+  
+      img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+  
+      .course-card-body {
+        padding: 1.5rem;
+      }
+  
+      .course-card-price {
+        color: var(--primary-color);
+        font-weight: 700;
+        font-size: 1.2rem;
+      }
+    }
+  }
+  
+  // 頁尾
+  .footer {
+    background: var(--dark-bg);
+    color: white;
+    padding: 5rem 0 2rem;
+  
+    .footer-title {
+      color: var(--secondary-color);
+      margin-bottom: 1.5rem;
+    }
+  
+    .footer-links {
+      list-style: none;
+      padding: 0;
+  
+      li {
+        margin-bottom: 0.8rem;
+  
+        a {
+          color: white;
+          text-decoration: none;
+          transition: color 0.3s ease;
+  
+          &:hover {
+            color: var(--secondary-color);
+          }
+        }
+      }
+    }
+  
+    .social-links {
+      a {
+        color: white;
+        font-size: 1.5rem;
+        margin-right: 1rem;
+        transition: color 0.3s ease;
+  
+        &:hover {
+          color: var(--secondary-color);
+        }
+      }
+    }
+  }
+  
+  // 手機版
+  @media (max-width: 375px) {
+    .course-hero {
+      width: 100%;
+      height: 40vh;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+  
+    .course-info-card {
+      margin-top: -50px;
+    }
+  
+    .info-grid {
+      display: flex;
+      flex-direction: column;
+    }
+  
+    .instructor-card {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+  
+      .instructor-avatar {
+        width: 250px;
+        height: 250px;
+      }
+    }
+  
+    .enrollment-section {
+      position: static;
+      margin-top: 2rem;
+    }
+  
+    .main-container {
+      width: 90%;
+      padding-left: 8px;
+      padding-right: 8px;
+    }
+  
+    // typography
+    // h1 { font-size: 44px !important; }
+    // h2 { font-size: 32px !important; }
+    // h3 { font-size: 26px !important; }
+    // h4 { font-size: 22px !important; }
+    // h5 { font-size: 18px !important; }
+    // p  { font-size: 14px !important; }
+    // span { font-size: 12px !important; }
+  }
+  
+  // Course-specific styles
+  .course-layout {
+    // Course Hero
+    .course-hero {
+      height: 60vh;
+      position: relative;
+      background-size: cover;
+      background-position: center;
+      
+      .hero-content {
+        position: absolute;
+        bottom: 2rem;
+        left: 0;
+        right: 0;
+        color: white;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      }
+
+      .hero-badge {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background: rgba(255,255,255,0.9);
+        color: var(--primary-color);
+        border-radius: 6px;
+        font-weight: 500;
+      }
+    }
+
+    // Course Info Card
+    .course-info-card {
+      background: white;
+      border-radius: 6px;
+      padding: 2rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      margin-top: -3rem;
+      position: relative;
+      z-index: 1;
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+        margin-top: 2rem;
+        
+        .info-item {
+          text-align: center;
+          
+          i {
+            font-size: 2rem;
+            color: var(--primary-color);
+          }
+        }
+      }
+    }
+
+    // Course Content
+    .content-section {
+      margin-top: 3rem;
+
+      .section-title {
+        margin-bottom: 2rem;
+        font-weight: 600;
+      }
+
+      .feature-list {
+        list-style: none;
+        padding: 0;
+
+        li {
+          display: flex;
+          align-items: flex-start;
+          margin-bottom: 1.5rem;
+
+          i {
+            color: var(--bs-success);
+            margin-right: 1rem;
+            font-size: 1.25rem;
+          }
+        }
+      }
+    }
+
+    // Instructor Card
+    .instructor-card {
+      display: flex;
+      gap: 2rem;
+      background: #f8f9fa;
+      padding: 2rem;
+      border-radius: 6px;
+
+      .instructor-avatar {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 6px;
+      }
+
+      .instructor-info {
+        flex: 1;
+
+        .experience-list {
+          list-style: none;
+          padding: 0;
+          margin-top: 1rem;
+
+          li {
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+
+            &:before {
+              content: "•";
+              position: absolute;
+              left: 0;
+              color: var(--primary-color);
+            }
+          }
+        }
+      }
+    }
+
+    // Enrollment Section
+    .enrollment-section {
+      background: white;
+      border-radius: 6px;
+      padding: 2rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 2rem;
+      
+      .price-tag {
+        font-size: 2rem;
+        font-weight: bold;
+        color: var(--primary-color);
+        margin-bottom: 1.5rem;
+        
+        .original-price {
+          font-size: 1rem;
+          color: #999;
+          text-decoration: line-through;
+          margin-left: 1rem;
+        }
+      }
+
+      .enrollment-features {
+        margin-bottom: 2rem;
+
+        li {
+          display: flex;
+          align-items: center;
+          margin-bottom: 1rem;
+
+          i {
+            margin-right: 1rem;
+            color: var(--primary-color);
+          }
+        }
+      }
+
+      .btn-enroll {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1.1rem;
+        font-weight: 500;
+
+        &.btn-outline {
+          border: 2px solid var(--primary-color);
+          color: var(--primary-color);
+          background: transparent;
+
+          &:hover {
+            background: var(--primary-color);
+            color: white;
+          }
+        }
+      }
+    }
+
+    // Venue Section
+    .venue-info {
+      .img-fluid {
+        border-radius: 6px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+
+        &:hover {
+          transform: scale(1.02);
+        }
+      }
+
+      .col-md-8 .img-fluid {
+        height: 400px;
+        object-fit: cover;
+      }
+
+      .col-md-4 .img-fluid {
+        height: 190px;
+        object-fit: cover;
+      }
+    }
+  }
+  
+  .course-gallery {
+    margin-top: 90px;
+    margin-bottom: 60px;
+  }
+  
+  .course-gallery .gallery-img-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  
+  .course-category-badge {
+    background: var(--primary-color);
+    color: #fff;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    display: inline-block;
+  }
+  
+  .content-section .row.g-4 {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  
+  .content-section .row.g-4 > .col-md-8,
+  .content-section .row.g-4 > .col-md-4 {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  
+  .content-section .row.g-4 .img-fluid {
+    margin-bottom: 16px;
+    border-radius: 12px;
+    object-fit: cover;
+    width: 100%;
+  }
+  
+  // 讓右側兩張圖之間有間距，但與主圖齊平
+  .content-section .col-md-4 .row.g-4 > .col-12:not(:last-child) .img-fluid {
+    margin-bottom: 16px;
+  }
+ 

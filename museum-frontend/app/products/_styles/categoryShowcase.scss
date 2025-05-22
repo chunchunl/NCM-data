@@ -1,0 +1,73 @@
+.group-hover-opacity-100 {
+  opacity: 1;
+  transition: opacity 0.4s ease-in-out;
+}
+
+.hover-card {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  cursor: pointer;
+}
+
+.zoom-on-hover {
+  max-height: 380px;
+  object-fit: contain;
+  transform: scale(1.6) translateX(35%);
+  transition: transform 0.4s ease;
+}
+
+.hover-card h2 {
+  position: relative;
+  display: inline-block;
+}
+
+.hover-card h2::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 0;
+  height: 2px;
+  background: currentColor;
+  transition: width 0.5s ease;
+}
+
+/* 電腦 hover 效果 */
+@media (hover: hover) and (pointer: fine) {
+  .group:hover .group-hover-opacity-100 {
+    opacity: 1;
+  }
+
+  // .hover-card:hover {
+  //   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  // }
+
+  .hover-card:hover img {
+    transform: scale(1.1);
+  }
+
+  .hover-card:hover .zoom-on-hover {
+    transform: scale(1.8) translateX(35%);
+  }
+
+  // .hover-card:hover h2::after {
+  //   width: 100%;
+  // }
+}
+
+/* 手機自動顯示動畫，不用 hover */
+@media (hover: none) and (pointer: coarse) {
+  .group-hover-opacity-100 {
+    opacity: 1;
+  }
+
+  .hover-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  }
+
+  .hover-card h2::after {
+    width: 100%;
+  }
+}

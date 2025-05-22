@@ -1,0 +1,74 @@
+@use '../../../_styles/foundation/palette' as *;
+@use '../../../_styles/foundation/_mixins' as *;
+
+// body {
+//   background-color: #f8f1e3;
+//   background-image: url(http://www.transparenttextures.com/patterns/asfalt-dark.png);
+// }
+
+.container {
+  margin-top: 30px;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 250px 1fr 200px;
+  min-height: 100vh;
+  grid-template-areas:
+    "left-sidebar low-content right-content"
+    "left-sidebar main-content right-content"
+    "left-sidebar main-content right-content";
+  gap: 10px;
+  padding: 60px;
+}
+
+.leftSidebar {
+  grid-area: left-sidebar;
+  // padding: 20px;
+  // border: 1px solid #000;
+  // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.lowContent {
+  grid-area: low-content;
+  position: relative;
+  padding: 0;
+  height: 200px;
+}
+
+.mainContent {
+  grid-area: main-content;
+  padding: 20px;
+  border: 1px solid #000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  height: auto;
+}
+
+.rightContent {
+  grid-area: right-content;
+  // background-color: rgb(157, 74, 48);
+  // padding: 20px;
+  // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  // display: flex;
+  // flex-direction: column;
+  height: 100%;
+}
+
+@include media-breakpoint-down(md) {
+  .container {
+    padding: 10px;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "low-content"
+      "left-sidebar"
+      "main-content"
+      "right-content";
+  }
+
+  .leftSidebar {
+    margin-top: -150px;
+  }
+
+  .rightContent {
+    display: none;
+  }
+} 

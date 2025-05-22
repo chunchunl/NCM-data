@@ -1,0 +1,24 @@
+// 等待客服狀態
+.waiting-status {
+  font-size: 0.8rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 1rem;
+  background-color: $warning-color;
+  color: $text-color;
+  margin-left: 0.5rem;
+}
+
+.waiting-message {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid $border-color;
+  
+  .spinner-border {
+    width: 2rem;
+    height: 2rem;
+  }
+  
+  p {
+    color: $text-color;
+    font-size: 0.9rem;
+  }
+} 

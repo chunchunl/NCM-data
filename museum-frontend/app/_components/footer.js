@@ -22,7 +22,7 @@ export default function Footer(props) {
           height: 80,
           left: 0,
           bottom: 0,
-          // position: 'fixed',
+          position: 'fixed',
           backgroundColor: '#1F1F1F',
           width: '100%',
           color: 'white',

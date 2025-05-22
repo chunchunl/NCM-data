@@ -1,0 +1,64 @@
+@use '../../../app/_styles/foundation/palette' as *;
+/* 細節頁樣式 */
+
+.heroBanner img {
+  display: block;
+  max-width: 80%;
+  height: auto; // 等比例縮放重點
+  object-fit: contain;
+  object-position: center;
+}
+
+.heroBanner {
+  margin-top: 60px;
+  text-align: center;
+
+  @media (max-width: 375px) {
+    margin-top: 80px;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    // margin-top: 80px;
+  }
+}
+
+.titleEx {
+  @media (max-width: 768px) {
+    font-size: 25px;
+  }
+}
+.subEx {
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+}
+
+.exhibitionDescription {
+  max-width: 768px;
+  font-size: 28px;
+  line-height: 1.8;
+  color: $sub-text;
+}
+
+.customHover {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: $primary !important;
+    // text-decoration: underline;
+
+    svg {
+      transform: scale(1.1);
+    }
+  }
+}
+
+.customFav {
+  border: none;
+}

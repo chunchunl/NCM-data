@@ -1,0 +1,125 @@
+body {
+  margin: 100px auto;
+  font-family: Helvetica;
+  background-color: #f8f1e3;
+  background-image: url(http://www.transparenttextures.com/patterns/asfalt-dark.png);
+}
+.crumbs {
+  text-align: center;
+
+  ul {
+    list-style: none;
+    display: inline-table;
+    padding: 0;
+    margin: 0;
+
+    li {
+      display: inline;
+
+      div {
+        display: block;
+        float: left;
+        height: 50px;
+        background: #fff;
+        text-align: center;
+        padding: 10px 50px 0 60px;
+        position: relative;
+        margin: 0 10px 0 0;
+        font-size: 20px;
+        text-decoration: none;
+        color: inherit;
+
+        &:after {
+          content: '';
+          border-top: 25px solid transparent;
+          border-bottom: 25px solid transparent;
+          border-left: 30px solid #fff;
+          position: absolute;
+          right: -30px;
+          top: 0;
+          z-index: 1;
+        }
+
+        &:before {
+          content: '';
+          border-top: 25px solid transparent;
+          border-bottom: 25px solid transparent;
+          border-left: 30px solid #f8f1e3;
+          position: absolute;
+          left: 0;
+          top: 0;
+        }
+      }
+
+      &:first-child div {
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+
+        &:before {
+          display: none;
+        }
+      }
+
+      &:last-child div {
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+
+        &:after {
+          display: none;
+        }
+      }
+
+      .active {
+        background: #9a3412;
+        color: #f8f1e3;
+
+        &:after {
+          border-left-color: #9a3412;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .crumbs ul li div {
+    padding: 10px 0px 0px 20px;
+    font-size: 16px;
+    height: 40px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .crumbs ul li div:after {
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-left: 20px solid #fff;
+    right: -20px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .crumbs ul li div:before {
+    border-left: 20px solid #f8f1e3;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+  }
+}
+.btn-block {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  font-size: 18px;
+  text-align: center;
+  background-color: #7b2d12;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+}
+.btn-block:hover {
+  background-color: #7e3b24;
+  color: #fff;
+}
+.custom-border {
+  border-bottom: 2px solid #be9d92;
+}

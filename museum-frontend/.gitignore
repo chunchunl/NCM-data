@@ -45,7 +45,7 @@ pnpm-lock.yaml
 # 前端專屬忽略
 /dist/                # 自訂輸出資料夾
 build/                # 其他 build 產物
-public/uploads/       # 使用者上傳測試檔
+public/       # 使用者上傳測試檔
 *.map                 # sourcemaps
 
 # —— 忽略所有常見圖片檔 —— #

@@ -49,8 +49,11 @@ body {
     'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   color: var(--main-text);
   line-height: 1.6;
-  background-color: $main-bg;
+  
   background-image: url(http://www.transparenttextures.com/patterns/asfalt-dark.png);
+  background-color: $main-bg !important;
+
+
 }
 
 // 標題樣式
@@ -85,6 +88,26 @@ p {
     font-size: 0.875rem;
     color: $sub-text;
   }
+}
+
+// 鏈接樣式 
+a {
+  font-family: $font-family-serif;
+  color: $primary;
+  text-decoration: none;
+
+  
+  &:hover,
+  &:focus {
+    color: darken($primary, 10%);
+    text-decoration: underline;
+  }
+}
+// List styles
+ul, ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 // Custom scrollbar

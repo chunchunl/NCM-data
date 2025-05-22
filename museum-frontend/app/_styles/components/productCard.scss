@@ -1,0 +1,251 @@
+.product-card {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  aspect-ratio: 1 / 1.25;
+  margin: 0 auto;
+  // border: 1px solid black;
+  box-shadow: 1px 3px 5px #33333388;
+  background-color: #ffffff;
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 1px 6px 12px rgba(0, 0, 0, 0.3);
+    transform: translateY(-8px);
+  }
+}
+
+// 商品圖片區（佔 60%）
+.product-img {
+  height: 60%;
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    object-fit: contain;
+  }
+
+  &:hover .img-overlay {
+    opacity: 1;
+  }
+}
+
+.img-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.more-btn {
+  padding: 6px 16px;
+  background-color: #fff;
+  color: #333;
+  border-radius: 6px;
+  font-size: 14px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+
+  &:hover {
+    // background-color: #ca6238;
+    color: #fff;
+    text-decoration: none; //確保 hover 時也沒底線
+  }
+
+  &:focus {
+    outline: none; //移除藍框
+    box-shadow: none;
+    text-decoration: none;
+  }
+}
+
+// 商品資訊區（佔 40%）
+.product-info {
+  height: auto; //不要限制高度
+  min-height: 40%; //給個底限，避免文字少時太扁
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+// 商品名稱
+.product-name {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 6px;
+  line-height: 1.3;
+  word-break: break-word; //避免超長詞語造成橫向捲動
+}
+
+// 價格區塊
+.product-price-wrap {
+  margin-bottom: 6px;
+}
+
+.product-price {
+  font-size: 16px;
+  color: #823b20;
+}
+
+.product-old-price {
+  font-size: 13px;
+  text-decoration: line-through;
+  color: #999;
+  margin-left: 6px;
+}
+
+.product-discount {
+  display: inline-block;
+  background-color: #e44;
+  color: white;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin-left: 6px;
+}
+
+.product-status {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+// 按鈕
+.product-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 10px; //不貼底部
+
+  .btn-primary {
+    // background-color: #823b20;
+    // color: white;
+    border: none;
+    padding: 12px 30px; //改長
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    height: 48px;
+    min-width: 78px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    // cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      // background-color: #c04b00;
+    }
+
+    //class="btn-primary disabled"
+    &.disabled {
+      background-color: #ccc;
+      color: #666;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    //如果是 button HTML 原生的 disabled 屬性
+    &:disabled {
+      background-color: #ccc;
+      color: #666;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+    &.btn.disabled {
+      cursor: not-allowed;
+    }
+
+    svg {
+      font-size: 16px;
+    }
+  }
+
+  .btn-icon {
+    width: 48px;
+    height: 48px;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: #f2f2f2;
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: none;
+    }
+  }
+}
+
+// 標籤
+.stock-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #dc3545;
+  color: white;
+  font-size: 12px;
+  padding: 4px 16px;
+  font-weight: bold;
+  border-radius: 6px;
+  z-index: 10;
+
+  &.sale {
+    background-color: #28a745;
+  }
+}
+
+// 空內容不顯示
+.product-old-price:empty,
+.product-discount:empty {
+  display: none;
+}
+
+// RWD
+@media (max-width: 991px) {
+  .product-card {
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 576px) {
+  .product-card {
+    max-width: 260px;
+  }
+
+  .product-name {
+    font-size: 18px;
+    // 仍然允許自動換行，這邊不限制行數
+  }
+
+  .product-price {
+    font-size: 14px;
+  }
+
+  .product-info {
+    padding: 8px;
+  }
+}

@@ -1,0 +1,143 @@
+$hover-color: #9b3413;
+$submenu-bg: rgba(255, 255, 255, 0.95);
+
+.category-menu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1rem 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+}
+
+.category-item {
+  position: relative;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  &:focus {
+    outline: none; /* 移除焦點時的框線 */
+  }
+
+  > span {
+    padding: 0.5rem 1rem;
+    position: relative;
+    display: inline-block;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: currentColor;
+      transition: width 0.4s;
+    }
+  }
+
+  .subcategory {
+    display: none;
+    flex-direction: column;
+    background: $submenu-bg;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    padding: 0.75rem 1rem;
+    z-index: 100;
+    position: absolute;
+    top: 100%;
+    left: -30%; /* 置中對齊 */
+    width: 150px;
+    min-width: unset;
+    animation: fadeSlideIn 0.3s ease forwards;
+
+    a {
+      font-size: 0.95rem;
+      color: #333;
+      text-decoration: none;
+      padding: 0.25rem 0;
+
+      &:hover {
+        color: $hover-color;
+      }
+      &:focus {
+        outline: none; /* 移除焦點時的框線 */
+      }
+    }
+  }
+
+  &.active {
+    > span {
+      color: $hover-color;
+
+      &::after {
+        width: 100%;
+      }
+    }
+
+    .subcategory {
+      display: flex;
+      position: static;
+      background: transparent;
+      box-shadow: none;
+      padding: 0.5rem 0 0;
+      margin-top: 0.25rem;
+      width: auto;
+      max-width: 100%;
+
+      a {
+        text-align: center;
+        font-weight: 500;
+        font-size: 1rem;
+        white-space: nowrap;
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .category-item:hover > span {
+    color: $hover-color;
+
+    &::after {
+      width: 100%;
+    }
+  }
+
+  .category-item:hover .subcategory {
+    display: flex;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .category-menu {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    justify-items: center;
+  }
+
+  .category-item {
+    width: 100%;
+    align-items: center;
+    &:focus {
+      outline: none; /* 移除焦點時的框線 */
+    }
+  }
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

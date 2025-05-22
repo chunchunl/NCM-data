@@ -1,0 +1,59 @@
+@use '../../../../../_styles/foundation/palette' as *;
+
+.couponTable {
+  border-radius: 6px;
+  overflow: hidden;
+  min-width: 600px;
+  width: 100%;
+  table-layout: fixed; // 固定欄寬必備
+
+  th {
+    background-color: $primary;
+    color: $light;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    padding: 12px;
+    border: 1px solid darken($primary, 10%);
+  }
+
+  td {
+    background-color: $light;
+    text-align: center;
+    vertical-align: middle;
+    padding: 12px;
+    border: 1px solid #ddd;
+  }
+
+  tbody tr:hover td {
+    background-color: $alert-primary;
+  }
+
+  thead {
+    border-radius: 6px;
+  }
+
+  tr {
+    transition: background-color 0.2s ease;
+  }
+}
+
+.expired {
+  filter: grayscale(100%);
+
+  td {
+    color: $sub-text !important;
+  }
+  th {
+    color: $btn-cancel !important;
+  }
+
+  .text-danger {
+    color: $sub-text !important; // 把紅色字也蓋掉
+  }
+
+  a {
+    color: $sub-text;
+    pointer-events: none; // 禁止點擊（可選）
+  }
+}

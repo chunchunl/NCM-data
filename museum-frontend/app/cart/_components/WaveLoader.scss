@@ -1,0 +1,68 @@
+.loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.306); // ✅ 半透明黑色背景遮罩
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.loader {
+  --r1: 154%;
+  --r2: 68.5%;
+  width: 150px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 3px solid #887f7a;
+  position: relative;
+  background:
+    radial-gradient(var(--r1) var(--r2) at top, #0000 79.5%, #7B2D12 80%),
+    radial-gradient(var(--r1) var(--r2) at bottom, #7B2D12 79.5%, #0000 80%),
+    radial-gradient(var(--r1) var(--r2) at top, #0000 79.5%, #7B2D12 80%), #ddd;
+  background-size: 50.5% 220%;
+  background-position:
+    -100% 0%,
+    0% 0%,
+    100% 0%;
+  background-repeat: no-repeat;
+  animation: wavefill 2.5s linear infinite;
+  border-radius: 4px solid #010e12;
+  // box-shadow: 0 0 15px #00bfff;
+}
+
+@keyframes wavefill {
+  33% {
+    background-position:
+      0% 33%,
+      100% 33%,
+      200% 33%;
+  }
+  66% {
+    background-position:
+      -100% 66%,
+      0% 66%,
+      100% 66%;
+  }
+  100% {
+    background-position:
+      0% 100%,
+      100% 100%,
+      200% 100%;
+  }
+}
+
+.loading-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: white;
+  pointer-events: none;
+  z-index: 1;
+}

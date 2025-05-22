@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model blog {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime
+  title      String   @db.VarChar(255)
+  content    String?  @db.Text
+  published  Boolean  @default(false)
+}
+
+model brand {
+  id      Int       @id @default(autoincrement())
+  name    String    @unique(map: "Brand_name_key")
+  img     String?
+  info    String    @db.Text
+  product product[]
+}
+
+model category {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique(map: "Category_name_key")
+  parent_id Int?
+  product   product[]
+}
+
+model favorite {
+  user_id    Int
+  product_id Int
+  product    product @relation(fields: [product_id], references: [id], map: "Favorite_product_id_fkey")
+  user       user    @relation(fields: [user_id], references: [id], map: "Favorite_user_id_fkey")
+
+  @@id([user_id, product_id])
+  @@index([product_id], map: "Favorite_product_id_fkey")
+}
+
+model otp {
+  id         Int      @id @default(autoincrement())
+  email      String
+  token      String
+  hash       String?
+  created_at DateTime @default(now())
+  expired_at DateTime
+}
+
+model product {
+  id          Int        @id @default(autoincrement())
+  name        String
+  sn          String     @unique(map: "Product_sn_key")
+  photos      String?    @db.Text
+  stock       Int        @default(0)
+  price       Int        @default(0)
+  info        String     @db.Text
+  brand_id    Int
+  category_id Int
+  favorite    favorite[]
+  brand       brand      @relation(fields: [brand_id], references: [id], map: "Product_brand_id_fkey")
+  category    category   @relation(fields: [category_id], references: [id], map: "Product_category_id_fkey")
+
+  @@index([brand_id], map: "Product_brand_id_fkey")
+  @@index([category_id], map: "Product_category_id_fkey")
+}
+
+model profile {
+  id       Int       @id @default(autoincrement())
+  name     String?
+  bio      String?   @db.Text
+  avatar   String?
+  sex      String?
+  birth    DateTime? @db.Date
+  phone    String?
+  postcode String?
+  address  String?
+  user_id  Int       @unique(map: "Profile_user_id_key")
+  user     user      @relation(fields: [user_id], references: [id], map: "Profile_user_id_fkey")
+}
+
+model user {
+  id                Int        @id @default(autoincrement())
+  username          String     @unique(map: "User_username_key")
+  password          String
+  email             String     @unique(map: "User_email_key")
+  email_validated   Boolean    @default(false)
+  google_uid        String?    @unique(map: "User_google_uid_key")
+  line_uid          String?    @unique(map: "User_line_uid_key")
+  line_access_token String?    @db.Text
+  favorite          favorite[]
+  profile           profile?
+}

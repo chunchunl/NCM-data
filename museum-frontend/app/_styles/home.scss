@@ -1,0 +1,342 @@
+@use 'foundation/palette' as *;
+@use 'foundation/mixins' as *;
+@use 'foundation/typography' as *;
+@use 'bootstrap/scss/bootstrap' as bootstrap;
+@use 'vendors/bootstrap-override' as *;
+
+//--------------------------------------------------------------
+// 1. 共用函式
+//--------------------------------------------------------------
+@function opa($color, $opacity) {
+  @return rgba(red($color), green($color), blue($color), $opacity);
+}
+
+//--------------------------------------------------------------
+// 2. 容器樣式
+//--------------------------------------------------------------
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+//   padding: 2rem;
+//   min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+//--------------------------------------------------------------
+// 3. 首頁網格容器
+//--------------------------------------------------------------
+.grid-container {
+  display: grid;
+  grid-template-columns: 350px 350px 350px 350px;
+  grid-template-rows: 350px 350px;
+  gap: 1rem;
+  grid-template-areas:
+    "box1 box2 box2 box3"
+    "box1 box4 box5 box5";
+  width: 100%;
+  max-width: 1440px;
+
+  @include media-breakpoint-down(xl) {
+    grid-template-columns: 250px 250px 250px;
+    grid-template-rows: 250px 250px 250px;
+    grid-template-areas:
+      "box1 box2 box2"
+      "box1 box3 box3"
+      "box4 box4 box5";
+  }
+
+  @include media-breakpoint-down(sm) {
+    grid-template-columns: 150px 150px;
+    grid-template-rows: 150px 150px 150px;
+    grid-template-areas:
+      "box1 box2"
+      "box1 box3"
+      "box4 box4"
+      "box5 box5";
+  }
+}
+
+//--------------------------------------------------------------
+// 4. 共用 Box 樣式
+//--------------------------------------------------------------
+.box {
+  h1 {
+    color: #ffffff;
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 1rem;
+  }
+}
+
+//--------------------------------------------------------------
+// 5. Box1 - 票券區
+//--------------------------------------------------------------
+.box1 {
+  background-color: $primary;
+  background-image: url("https://www.transparenttextures.com/patterns/green-dust-and-scratches.png");
+  grid-area: box1;
+  border-radius: bootstrap.$border-radius;
+  position: relative;
+  overflow: hidden;
+
+  .box1-hr {
+    border: 1px dashed #ffffff;
+    margin-top: 3rem;
+  }
+
+  .box1-content {
+    padding: 0.5rem 3rem;
+  }
+
+  h1 {
+    text-align: left;
+    margin: 0 auto;
+
+    img {
+      width: 36px;
+    }
+  }
+
+  p {
+    font-size: 3rem;
+    color: opa(#fff, 0.7);
+    text-align: center;
+
+    hr {
+      margin: 1rem 0;
+    }
+  }
+
+  button {
+    display: block;
+    margin: 1rem auto;
+    padding: 0.5rem 1rem;
+    border-radius: bootstrap.$border-radius;
+  }
+
+  // 票券裝飾
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    background: $light;
+    border-radius: 50%;
+    top: 60%;
+    transform: translateY(-50%);
+    z-index: 2;
+  }
+
+  &::before {
+    left: -18px;
+  }
+
+  &::after {
+    right: -18px;
+  }
+}
+
+// 票券盒子
+.ticket-box {
+  margin: 1.5rem auto;
+  width: 90%;
+  height: 50%;
+  border-radius: bootstrap.$border-radius;
+  box-shadow: inset 0 0 10px opa($dark, 0.5);
+  background-image: linear-gradient(
+      120deg,
+      opa($primary, 0.4),
+      opa(#fff, 0.3),
+      opa($light, 0.687),
+      opa(#fff, 0.2),
+      opa($primary, 0.4)
+    );
+    // url(./images/ticket2.jpeg);
+  background-size: 300% 300%, cover;
+  background-position: 0% 50%, center;
+  background-repeat: no-repeat, no-repeat;
+  animation: rainbowShine 10s ease-in-out infinite;
+}
+
+//--------------------------------------------------------------
+// 6. Box2 - 圖片展示
+//--------------------------------------------------------------
+.box2 {
+  grid-area: box2;
+//   background-image: url(./images/box-bg6.jpeg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+//--------------------------------------------------------------
+// 7. Box3 - 課程區
+//--------------------------------------------------------------
+.box3 {
+  grid-area: box3;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 10px opa($dark, 0.1);
+  background-image: linear-gradient(
+      120deg,
+      opa($primary, 0.4),
+      opa(#fff, 0.3),
+      opa($light, 0.687),
+      opa(#fff, 0.2),
+      opa($primary, 0.4)
+    );
+    // url(./images/cer4.jpeg);
+  background-size: 300% 300%, cover;
+  background-position: 0% 50%, center;
+  background-repeat: no-repeat, no-repeat;
+  animation: rainbowShine 10s ease-in-out infinite;
+
+  .box3-course {
+    margin: 0 auto;
+    padding: 1rem;
+    background-color: opa(#fff, 0.15);
+    backdrop-filter: blur(4px);
+    border-radius: bootstrap.$border-radius;
+
+    .box3-course-content {
+      width: 100%;
+      height: 90%;
+      margin: auto 0;
+      border-radius: bootstrap.$border-radius;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    h1 {
+      color: $dark;
+    }
+
+    button {
+      display: block;
+      margin: 1rem auto;
+      padding: 0.5rem 1rem;
+      border-radius: bootstrap.$border-radius;
+    }
+  }
+}
+
+//--------------------------------------------------------------
+// 8. Box4 - 商店區
+//--------------------------------------------------------------
+.box4 {
+  grid-area: box4;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 10px opa($dark, 0.1);
+  background-image: linear-gradient(
+      120deg,
+      opa($primary, 0.4),
+      opa(#fff, 0.3),
+      opa($light, 0.687),
+      opa(#fff, 0.2),
+      opa($primary, 0.4)
+    );
+    // url(./images/cer6.jpeg);
+  background-size: 300% 300%, cover;
+  background-position: 0% 50%, center;
+  background-repeat: no-repeat, no-repeat;
+  animation: rainbowShine 10s ease-in-out infinite;
+
+  .box4-shop {
+    margin: 0 auto;
+    padding: 1rem;
+    background-color: opa(#fff, 0.15);
+    backdrop-filter: blur(4px);
+    border-radius: bootstrap.$border-radius;
+
+    .box4-shop-content {
+      width: 100%;
+      height: 90%;
+      margin: auto 0;
+      border-radius: bootstrap.$border-radius;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    h1 {
+      color: $dark;
+    }
+
+    button {
+      display: block;
+      margin: 1rem auto;
+      padding: 0.5rem 1rem;
+      border-radius: bootstrap.$border-radius;
+    }
+  }
+}
+
+//--------------------------------------------------------------
+// 9. Box5 - 活動區
+//--------------------------------------------------------------
+.box5 {
+  grid-area: box5;
+  position: relative;
+  padding: 4rem 2rem;
+  border-radius: bootstrap.$border-radius;
+  overflow: hidden;
+  text-align: center;
+  color: #fff;
+//   background-image: url(./images/ticket4.jpeg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 0 10px opa(#fff, 0.6);
+  }
+
+  button {
+    padding: 0.8rem 1.8rem;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: bootstrap.$border-radius;
+    background-color: opa(#fff, 0.3);
+    color: #fff;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 10px opa($primary, 0.5);
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+}
+
+//--------------------------------------------------------------
+// 10. 動畫
+//--------------------------------------------------------------
+@keyframes rainbowShine {
+  0% {
+    background-position: 0% 50%, center;
+  }
+  50% {
+    background-position: 100% 50%, center;
+  }
+  100% {
+    background-position: 0% 50%, center;
+  }
+}
+  

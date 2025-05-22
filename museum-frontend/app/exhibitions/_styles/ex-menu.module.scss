@@ -1,0 +1,204 @@
+@use '../../../app/_styles/foundation/palette' as *;
+// @use '../../../app/_styles/components/buttons' as *;
+
+/* fullscreen-split-menu.module.css */
+.buttonContainer {
+  position: absolute;
+  top: 5rem;
+  left: 2rem;
+  height: 27px;
+  width: 35px;
+  cursor: pointer;
+  z-index: 100;
+  transition: opacity 0.5s ease;
+}
+
+.buttonContainer:hover {
+  opacity: 0.7;
+}
+
+.buttonContainer span {
+  background: $sub-text;
+  border: none;
+  height: 5px;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  transition: all 1s ease;
+  cursor: pointer;
+}
+
+.buttonContainer span:nth-of-type(1) {
+  top: 0;
+}
+.buttonContainer span:nth-of-type(2) {
+  top: 10px;
+}
+.buttonContainer span:nth-of-type(3) {
+  top: 20px;
+}
+
+.buttonContainer.active .top {
+  transform: translateY(10px) rotate(45deg);
+  background: #fff;
+}
+.buttonContainer.active .middle {
+  opacity: 0;
+  background: #fff;
+}
+.buttonContainer.active .bottom {
+  transform: translateY(-10px) rotate(-45deg);
+  background: #fff;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%; /* 修正展開時中間的縫隙 */
+  height: 100%;
+  visibility: hidden;
+  opacity: 0;
+  z-index: 50;
+  overflow: hidden;
+}
+
+.overlay::before,
+.overlay::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background-color: $primary;
+  z-index: 1;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 1s ease;
+}
+
+.overlay::before {
+  left: 0;
+}
+
+.overlay::after {
+  right: 0;
+}
+
+.overlay.open {
+  visibility: visible;
+  opacity: 1;
+}
+
+.overlay.open::before {
+  transform: scaleX(1);
+  transform-origin: right;
+}
+
+.overlay.open::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.overlay.closing::before {
+  transform: scaleX(0);
+  transform-origin: right;
+}
+
+.overlay.closing::after {
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.overlayMenu {
+  position: relative;
+  z-index: 199;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  list-style: none;
+  width: 100%;
+}
+
+.overlay.open .overlayMenu {
+  opacity: 1;
+}
+
+.overlayMenu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  text-decoration: none !important;
+}
+
+.overlayMenu li {
+  margin: 1rem 0;
+  font-size: 2rem;
+  color: $sub-text;
+  opacity: 0;
+  animation: fadeIn 0.6s ease forwards;
+}
+
+.overlay.open .overlayMenu li:nth-of-type(1) {
+  animation-delay: 0.6s;
+}
+.overlay.open .overlayMenu li:nth-of-type(2) {
+  animation-delay: 0.8s;
+}
+.overlay.open .overlayMenu li:nth-of-type(3) {
+  animation-delay: 1s;
+}
+.overlay.open .overlayMenu li:nth-of-type(4) {
+  animation-delay: 1.2s;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  /* 50% {
+    opacity: 0.5;
+    transform: translateY(20px);
+  } */
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.container {
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  margin-top: 8rem;
+}
+.overlayMenu {
+  position: relative;
+  z-index: 2;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+  font-family: 'Vollkorn', serif;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.overlay.open .overlayMenu {
+  opacity: 1;
+}
+
+.overlay.closing .overlayMenu {
+  opacity: 0;
+}
+.overlayMenu a {
+  color: inherit;
+  text-decoration: none;
+  font-weight: bold; /* 可選：讓文字更有力 */
+  transition: color 0.3s ease;
+}
+
+.overlayMenu a:hover {
+  color: $light; /* hover 時變亮色，自己挑喜歡的顏色 */
+}

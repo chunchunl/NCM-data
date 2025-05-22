@@ -1,0 +1,46 @@
+.others-section {
+  padding: 60px 0 100px 0;
+  font-family: "Noto Serif TC", serif;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .text-center {
+    margin-bottom: 24px;
+
+    h4 {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .others-title {
+      color: #666;
+      font-size: 1rem;
+    }
+  }
+
+  .card-scroll {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 12px 30px;
+    scroll-behavior: smooth;
+
+    /* 自訂 scrollbar 外觀 */
+    &::-webkit-scrollbar {
+      height: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #b58b61;
+      border-radius: 6px;
+      width: 50%;
+      margin-left: 25%;
+      margin-right: 25%;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: #f5f0e6;
+      border-radius: 8px;
+    }
+  }
+}

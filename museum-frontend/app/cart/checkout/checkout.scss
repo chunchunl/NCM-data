@@ -1,0 +1,214 @@
+body {
+  margin: 100px auto;
+  font-family: Helvetica;
+  background-color: #f8f1e3;
+  background-image: url(http://www.transparenttextures.com/patterns/asfalt-dark.png);
+}
+
+.myOrder {
+  border-bottom: #383b3a 3px solid;
+}
+
+.accordion-button {
+  background-color: #fff;
+
+  /* 淡米色背景，可依需求修改 */
+  color: #333;
+
+  /* 深灰文字 */
+  border: none;
+
+  /* 去除邊框 */
+  box-shadow: none !important;
+
+  /* 去除點擊時的藍色陰影 */
+  outline: none !important;
+
+  /* 去除 focus 時的外框 */
+
+  &:not(.collapsed) {
+    background-color: #fff;
+
+    /* 展開時保持一樣的背景 */
+    color: #333;
+  }
+}
+
+// .accordion-item,
+// .accordion-collapse {
+//   border: none;
+//   background-color: transparent;
+// }
+
+// .accordion-body {
+//   background-color: transparent;
+// }
+
+// .accordion-btn-payment,
+// .accordion-btn-shipping {
+//   display: block;
+// }
+
+// .accordion-body-payment,
+// .accordion-body-shipping {
+//   background-color: #fff;
+// }
+
+// .accordion-btn-payment:not(.collapsed),
+// .accordion-btn-shipping:not(.collapsed) {
+//   background-color: rgb(248, 248, 248);
+//   border: 1px solid black;
+// }
+
+// .accordion-payment,
+// .accordion-shipping {
+//   border: 1px solid rgb(231, 221, 221);
+// }
+
+// .lottie-container {
+//   display: none;
+//   margin-top: 20px;
+//   text-align: center;
+// }
+
+.form-check-input {
+  &:checked {
+    background-color: #7b2d12;
+    border-color: #7b2d12;
+  }
+
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+[role='tw-city-selector'] {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+
+  .form-group {
+    flex: 1 1 45%;
+  }
+}
+
+.crumbs {
+  text-align: center;
+
+  ul {
+    list-style: none;
+    display: inline-table;
+    padding: 0;
+    margin: 0;
+
+    li {
+      display: inline;
+
+      div {
+        display: block;
+        float: left;
+        height: 50px;
+        background: #fff;
+        text-align: center;
+        padding: 10px 50px 0 60px;
+        position: relative;
+        margin: 0 10px 0 0;
+        font-size: 20px;
+        text-decoration: none;
+        color: inherit;
+
+        &:after {
+          content: '';
+          border-top: 25px solid transparent;
+          border-bottom: 25px solid transparent;
+          border-left: 30px solid #fff;
+          position: absolute;
+          right: -30px;
+          top: 0;
+          z-index: 1;
+        }
+
+        &:before {
+          content: '';
+          border-top: 25px solid transparent;
+          border-bottom: 25px solid transparent;
+          border-left: 30px solid #f8f1e3;
+          position: absolute;
+          left: 0;
+          top: 0;
+        }
+      }
+
+      &:first-child div {
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+
+        &:before {
+          display: none;
+        }
+      }
+
+      &:last-child div {
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+
+        &:after {
+          display: none;
+        }
+      }
+
+      .active {
+        background: #9a3412;
+        color: #f8f1e3;
+
+        &:after {
+          border-left-color: #9a3412;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .crumbs ul li div {
+    padding: 10px 0px 0px 20px;
+    font-size: 16px;
+    height: 40px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .crumbs ul li div:after {
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-left: 20px solid #fff;
+    right: -20px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .crumbs ul li div:before {
+    border-left: 20px solid #f8f1e3;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+  }
+}
+// .accordion-button::after {
+//   display: none !important;
+// }
+// .accordion-button.order-button::after {
+//   display: block !important;
+// }
+
+.accordion-item-payment, .accordion-item-shipping {
+  .accordion-button::after {
+    display: none !important;
+  }
+}
+.accordion-body {
+  border: #333;
+}
+// .accordion-body-payment {
+//   border: 1px solid #ccc;
+//   padding: 16px;
+// }

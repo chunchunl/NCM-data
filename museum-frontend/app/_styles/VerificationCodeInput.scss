@@ -1,0 +1,42 @@
+.code-input-wrapper {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  
+    .code-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+      font-size: 1rem;
+      color: #333;
+
+      align-self: flex-start;
+    }
+  
+    .code-input-container {
+        width: 80%;
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+
+    }
+  
+    .code-input {
+      width: 40px;
+      height: 50px;
+      font-size: 1.5rem;
+      text-align: center;
+      border: none;
+      border-bottom: 3px solid #ccc;
+      background-color: transparent;
+      transition: all 0.3s ease;
+  
+      &:focus {
+        outline: none;
+        border-color: #6c63ff;
+        background-color: #f9f8ff;
+      }
+    }
+  }
+  
