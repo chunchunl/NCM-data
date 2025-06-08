@@ -62,44 +62,6 @@ model chat_messages {
   @@index([receiver_id], map: "receiver_id")
 }
 
-model chat_room_members {
-  room_id    Int
-  member_id  Int
-  role       chat_room_members_role? @default(member)
-  joined_at  DateTime?               @default(now()) @db.DateTime(0)
-  chat_rooms chat_rooms              @relation(fields: [room_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "chat_room_members_ibfk_1")
-  members    members                 @relation(fields: [member_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "chat_room_members_ibfk_2")
-
-  @@id([room_id, member_id])
-  @@index([room_id, member_id], map: "idx_room_member")
-  @@index([member_id], map: "member_id")
-}
-
-model chat_room_messages {
-  id           Int                              @id @default(autoincrement())
-  room_id      Int
-  sender_id    Int
-  content      String                           @db.Text
-  message_type chat_room_messages_message_type? @default(text)
-  status       chat_room_messages_status?       @default(sent)
-  created_at   DateTime?                        @default(now()) @db.DateTime(0)
-  updated_at   DateTime?                        @default(now()) @db.DateTime(0)
-  chat_rooms   chat_rooms                       @relation(fields: [room_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "chat_room_messages_ibfk_1")
-  members      members                          @relation(fields: [sender_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "chat_room_messages_ibfk_2")
-
-  @@index([room_id, created_at], map: "idx_room_messages")
-  @@index([sender_id], map: "sender_id")
-}
-
-model chat_rooms {
-  id                 Int                  @id @default(autoincrement())
-  name               String?              @db.VarChar(255)
-  created_at         DateTime?            @default(now()) @db.DateTime(0)
-  updated_at         DateTime?            @default(now()) @db.DateTime(0)
-  chat_room_members  chat_room_members[]
-  chat_room_messages chat_room_messages[]
-}
-
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model coupons {
   id             Int              @id @default(autoincrement())
@@ -110,15 +72,15 @@ model coupons {
   discount       Int
   minSpend       Int?             @db.UnsignedInt
   endDate        DateTime         @db.Date
-  status         coupons_status?  @default(dbgenerated("啟用"))
+  status         coupons_status?  @default(啟用)  
   expired_at     DateTime?        @db.Date
+  source         String?          @default("normal") @db.VarChar(20)
   member_coupons member_coupons[]
 }
 
 model course_categories {
   id                  Int                   @id @default(autoincrement())
   name                String                @db.VarChar(255)
-  parent_id           Int?
   course_category_map course_category_map[]
 }
 
@@ -174,40 +136,36 @@ model course_revisions {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model courses {
-  id                     Int                    @id @default(autoincrement())
-  title                  String                 @db.VarChar(150)
+  id                     Int                   @id @default(autoincrement())
+  title                  String                @db.VarChar(150)
   artist_id              Int
   venue_id               Int
-  start_time             DateTime               @db.DateTime(0)
-  end_time               DateTime               @db.DateTime(0)
-  price                  Decimal?               @default(0) @db.Decimal(10, 0)
-  status                 courses_status         @default(pending)
-  created_at             DateTime?              @default(now()) @db.DateTime(0)
-  updated_at             DateTime?              @default(now()) @db.DateTime(0)
-  video_url              String?                @db.VarChar(255)
-  duration_value         Int?
+  start_time             DateTime              @db.DateTime(0)
+  end_time               DateTime              @db.DateTime(0)
+  price                  Decimal?              @default(0) @db.Decimal(10, 0)
+  status                 courses_status        @default(pending)
+  created_at             DateTime?             @default(now()) @db.DateTime(0)
+  updated_at             DateTime?             @default(now()) @db.DateTime(0)
+  video_url              String?               @db.VarChar(255)
   max_students           Int?
-  sessions_per_week      Int?
-  hours_per_session      Decimal?               @db.Decimal(4, 0)
   materials_included     Boolean?
-  duration_unit          courses_duration_unit? @default(dbgenerated("週"))
-  submitted_at           DateTime?              @default(now()) @db.DateTime(0)
+  submitted_at           DateTime?             @default(now()) @db.DateTime(0)
   reviewed_by            Int?
-  reviewed_at            DateTime?              @db.DateTime(0)
-  review_notes           String?                @db.Text
-  description_intro      String?                @db.Text
-  description_content    String?                @db.Text
-  description_notice     String?                @db.Text
-  description_highlights String?                @db.Text
+  reviewed_at            DateTime?             @db.DateTime(0)
+  review_notes           String?               @db.Text
+  description_intro      String?               @db.Text
+  description_content    String?               @db.Text
+  description_notice     String?               @db.Text
+  description_highlights String?               @db.Text
   admin_submitted_id     Int?
   teacher_submitted_id   Int?
   course_category_map    course_category_map[]
   course_images          course_images[]
   course_revisions       course_revisions[]
-  artists                artists                @relation(fields: [artist_id], references: [id], onUpdate: Restrict, map: "courses_ibfk_1")
-  venues                 venues                 @relation(fields: [venue_id], references: [id], onUpdate: Restrict, map: "courses_ibfk_2")
-  admins                 admins?                @relation(fields: [admin_submitted_id], references: [id], onDelete: Restrict, map: "fk_courses_admin_submitted")
-  teachers               teachers?              @relation(fields: [teacher_submitted_id], references: [id], onDelete: Restrict, map: "fk_courses_teacher_submitted")
+  artists                artists               @relation(fields: [artist_id], references: [id], onUpdate: Restrict, map: "courses_ibfk_1")
+  venues                 venues                @relation(fields: [venue_id], references: [id], onUpdate: Restrict, map: "courses_ibfk_2")
+  admins                 admins?               @relation(fields: [admin_submitted_id], references: [id], onDelete: Restrict, map: "fk_courses_admin_submitted")
+  teachers               teachers?             @relation(fields: [teacher_submitted_id], references: [id], onDelete: Restrict, map: "fk_courses_teacher_submitted")
   venue_bookings         venue_bookings[]
 
   @@index([admin_submitted_id], map: "fk_courses_admin_submitted")
@@ -251,6 +209,7 @@ model member_coupons {
   name       String?                  @db.Char(50)
   minSpend   Int?
   type       member_coupons_type?
+  source     String?                  @default("normal") @db.VarChar(20)
   coupons    coupons                  @relation(fields: [coupon_id], references: [id], onUpdate: Restrict, map: "member_coupons_ibfk_1")
 
   @@index([coupon_id], map: "coupon_id")
@@ -260,14 +219,17 @@ model member_orders {
   id                Int          @id @default(autoincrement())
   member_id         Int?
   order_number      String?      @db.VarChar(255)
-  shipping_method   String?      @db.VarChar(255)
-  payment_method    String?      @db.VarChar(255)
-  discount          Int?
-  shipping_fee      Int?
   recipient_name    String?      @db.VarChar(255)
   recipient_email   String?      @db.VarChar(255)
   recipient_phone   String?      @db.VarChar(255)
   recipient_address String?      @db.VarChar(255)
+  shipping_method   String?      @db.VarChar(255)
+  shipping_fee      Int?
+  store_name        String?      @db.VarChar(100)
+  payment_method    String?      @db.VarChar(255)
+  discount          Int?
+  total_price       Decimal?     @default(0.00) @db.Decimal(10, 2)
+  status            String?      @default("處理中") @db.VarChar(50)
   created_at        DateTime     @default(now()) @db.DateTime(0)
   order_item        order_item[]
 }
@@ -288,23 +250,23 @@ model member_profiles {
 }
 
 model members {
-  id                                               Int                  @id @default(autoincrement())
-  email                                            String               @unique(map: "email") @db.VarChar(255)
-  password                                         String?              @db.VarChar(255)
-  reset_token                                      String?              @db.VarChar(255)
-  reset_token_expiry                               DateTime?            @db.DateTime(0)
-  google_id                                        String?              @db.VarChar(255)
-  role                                             members_role?        @default(member)
-  is_deleted                                       Boolean?             @default(false)
-  created_at                                       DateTime?            @default(now()) @db.DateTime(0)
-  firebase_uid                                     String?              @unique(map: "firebase_uid") @db.VarChar(255)
-  chat_messages_chat_messages_sender_idTomembers   chat_messages[]      @relation("chat_messages_sender_idTomembers")
-  chat_messages_chat_messages_receiver_idTomembers chat_messages[]      @relation("chat_messages_receiver_idTomembers")
-  chat_room_members                                chat_room_members[]
-  chat_room_messages                               chat_room_messages[]
+  id                                               Int               @id @default(autoincrement())
+  email                                            String            @unique(map: "email") @db.VarChar(255)
+  password                                         String?           @db.VarChar(255)
+  reset_token                                      String?           @db.VarChar(255)
+  reset_token_expiry                               DateTime?         @db.DateTime(0)
+  google_id                                        String?           @db.VarChar(255)
+  role                                             members_role?     @default(member)
+  is_deleted                                       Boolean?          @default(false)
+  created_at                                       DateTime?         @default(now()) @db.DateTime(0)
+  firebase_uid                                     String?           @unique(map: "firebase_uid") @db.VarChar(255)
+  chat_messages_chat_messages_sender_idTomembers   chat_messages[]   @relation("chat_messages_sender_idTomembers")
+  chat_messages_chat_messages_receiver_idTomembers chat_messages[]   @relation("chat_messages_receiver_idTomembers")
+  comment                                          comment[]
   member_profiles                                  member_profiles[]
-  messages_messages_from_user_idTomembers          messages[]           @relation("messages_from_user_idTomembers")
-  messages_messages_to_user_idTomembers            messages[]           @relation("messages_to_user_idTomembers")
+  messages_messages_from_user_idTomembers          messages[]        @relation("messages_from_user_idTomembers")
+  messages_messages_to_user_idTomembers            messages[]        @relation("messages_to_user_idTomembers")
+  reviews                                          reviews[]
 }
 
 model messages {
@@ -330,10 +292,12 @@ model notes {
 model order_item {
   id            Int           @id @default(autoincrement())
   order_id      Int
-  quantity      Int
-  price         Int
   item_type     String        @db.VarChar(255)
   item_id       Int
+  image_url     String?       @db.VarChar(255)
+  name          String?       @db.VarChar(255)
+  quantity      Int
+  price         Int
   member_orders member_orders @relation(fields: [order_id], references: [id], onDelete: Cascade, map: "order_item_ibfk_1")
 
   @@index([order_id], map: "order_id")
@@ -418,6 +382,7 @@ model products {
   discount_rate         Decimal?               @db.Decimal(10, 2)
   description           String?                @db.Text
   details               String?                @db.Text
+  product_story         String?                @db.Text
   category_id           Int?
   subcategory_id        Int?
   material_id           Int?
@@ -434,6 +399,7 @@ model products {
   product_materials     product_materials?     @relation(fields: [material_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "products_ibfk_3")
   product_origins       product_origins?       @relation(fields: [origin_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "products_ibfk_4")
   product_functions     product_functions?     @relation(fields: [function_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "products_ibfk_5")
+  reviews               reviews[]
 
   @@index([category_id], map: "category_id")
   @@index([function_id], map: "function_id")
@@ -463,7 +429,6 @@ model venue_bookings {
   course_id       Int
   start_time      DateTime                       @db.DateTime(0)
   end_time        DateTime                       @db.DateTime(0)
-  status          venue_bookings_status?         @default(pending)
   created_by      Int
   created_by_type venue_bookings_created_by_type
   created_at      DateTime?                      @default(now()) @db.DateTime(0)
@@ -473,7 +438,7 @@ model venue_bookings {
 
   @@index([course_id], map: "course_id")
   @@index([created_by], map: "created_by")
-  @@index([status, start_time, end_time], map: "idx_status_dates")
+  @@index([start_time, end_time], map: "idx_status_dates")
   @@index([venue_id, start_time, end_time], map: "idx_venue_dates")
   @@index([venue_id], map: "venue_id")
 }
@@ -489,15 +454,40 @@ model venues {
   venue_bookings venue_bookings[]
 }
 
-enum chat_room_members_role {
-  owner
-  admin
-  member
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model comment {
+  id           Int                  @id @default(autoincrement()) @db.UnsignedInt
+  member_id    Int
+  comment_type comment_comment_type
+  target_id    Int
+  content      String               @db.Text
+  rating       Boolean?
+  created_at   DateTime?            @default(now()) @db.DateTime(0)
+  updated_at   DateTime?            @default(now()) @db.DateTime(0)
+  members      members              @relation(fields: [member_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "fk_comment_member")
+
+  @@index([member_id], map: "idx_member")
+  @@index([comment_type, target_id], map: "idx_target")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model reviews {
+  review_id  Int       @id @default(autoincrement())
+  product_id Int
+  member_id  Int
+  rating     Int       @db.TinyInt
+  comment    String?   @db.Text
+  created_at DateTime? @default(now()) @db.DateTime(0)
+  members    members   @relation(fields: [member_id], references: [id], onDelete: Cascade, map: "fk_review_member")
+  products   products  @relation(fields: [product_id], references: [id], onDelete: Cascade, map: "fk_review_product")
+
+  @@index([member_id], map: "fk_review_member")
+  @@index([product_id], map: "fk_review_product")
 }
 
 enum coupons_category {
-  商品 @map("商品")
-  課程 @map("課程")
+  Product  @map("商品")
+  Course   @map("課程")
 }
 
 enum member_profiles_gender {
@@ -511,15 +501,9 @@ enum admins_role {
   admin
 }
 
-enum chat_room_messages_message_type {
-  text
-  image
-  file
-}
-
 enum coupons_type {
-  百分比 @map("百分比")
-  現金 @map("現金")
+  Percentage @map("百分比")
+  Cash       @map("現金")
 }
 
 enum teachers_status {
@@ -527,19 +511,7 @@ enum teachers_status {
   inactive
 }
 
-enum chat_room_messages_status {
-  sent
-  delivered
-  read
-}
-
 enum course_revisions_status {
-  pending
-  approved
-  rejected
-}
-
-enum venue_bookings_status {
   pending
   approved
   rejected
@@ -580,16 +552,16 @@ enum chat_messages_status {
 }
 
 enum member_coupons_category {
-  商品 @map("商品")
-  課程 @map("課程")
+  Product  @map("商品")
+  Course   @map("課程")
 }
 
 enum member_coupons_type {
-  百分比 @map("百分比")
-  現金 @map("現金")
+  Percentage @map("百分比")
+  Cash       @map("現金")
 }
 
-enum courses_duration_unit {
-  天 @map("天")
-  週 @map("週")
+enum comment_comment_type {
+  course
+  product
 }
